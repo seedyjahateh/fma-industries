@@ -6,7 +6,10 @@
  * page is spent on the display type and the yellow, not the background.
  */
 export function HeroBackdrop({ tone = "light" }: { tone?: "light" | "dark" }) {
-  const rule = tone === "dark" ? "border-rule-dark" : "border-rule";
+  // `border-rule` re-points itself inside `.on-dark`, so the registration marks
+  // need no branching. `tone` still selects the grid, which is a background
+  // image rather than a token.
+  const rule = "border-rule";
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">

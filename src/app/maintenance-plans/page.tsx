@@ -132,7 +132,7 @@ export default function MaintenancePlansPage() {
                     className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-rule-dark py-4"
                   >
                     <dt className="font-display-tight text-sm uppercase text-panel">{term}</dt>
-                    <dd className="label text-slate-2">{def}</dd>
+                    <dd className="label text-slate">{def}</dd>
                   </div>
                 ))}
               </dl>
@@ -153,7 +153,11 @@ export default function MaintenancePlansPage() {
           <div className="mt-12 grid gap-px border-y border-rule bg-rule lg:grid-cols-3">
             {plans.map((plan, i) => (
               <Reveal key={plan.name} delay={i * 70}>
-                <div className={`flex h-full flex-col ${plan.featured ? "bg-ink" : "bg-panel"}`}>
+                <div
+                  className={`flex h-full flex-col ${
+                    plan.featured ? "on-dark bg-ink" : "bg-panel"
+                  }`}
+                >
                   {plan.featured ? (
                     <div className="tape-stripes h-2" aria-hidden />
                   ) : (
@@ -161,7 +165,7 @@ export default function MaintenancePlansPage() {
                   )}
 
                   <div className="flex flex-1 flex-col p-7 lg:p-9">
-                    <Label tone={plan.featured ? "light" : "dark"}>{plan.cadence}</Label>
+                    <Label>{plan.cadence}</Label>
                     <h3
                       className={`font-display mt-5 text-h2 uppercase leading-none ${
                         plan.featured ? "text-panel" : "text-ink"
@@ -169,24 +173,13 @@ export default function MaintenancePlansPage() {
                     >
                       {plan.name}
                     </h3>
-                    <p
-                      className={`mt-3 text-sm ${plan.featured ? "text-slate-2" : "text-slate"}`}
-                    >
-                      {plan.forWho}
-                    </p>
+                    {/* text-slate and border-rule flip themselves via the
+                        `on-dark` on the featured card, so no branching here. */}
+                    <p className="mt-3 text-sm text-slate">{plan.forWho}</p>
 
-                    <ul
-                      className={`mt-7 flex-1 space-y-2.5 border-t pt-6 ${
-                        plan.featured ? "border-rule-dark" : "border-rule"
-                      }`}
-                    >
+                    <ul className="mt-7 flex-1 space-y-2.5 border-t border-rule pt-6">
                       {plan.includes.map((item) => (
-                        <li
-                          key={item}
-                          className={`text-sm leading-snug ${
-                            plan.featured ? "text-slate-2" : "text-slate"
-                          }`}
-                        >
+                        <li key={item} className="text-sm leading-snug text-slate">
                           {item}
                         </li>
                       ))}

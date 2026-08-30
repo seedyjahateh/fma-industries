@@ -23,13 +23,13 @@ function LinkColumn({
 }) {
   return (
     <nav aria-label={heading}>
-      <Label tone="light">{heading}</Label>
+      <Label>{heading}</Label>
       <ul className="mt-5 space-y-2.5">
         {items.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href}
-              className="text-sm text-slate-2 transition-colors hover:text-panel"
+              className="text-sm text-slate transition-colors hover:text-panel"
             >
               {item.label}
             </Link>
@@ -52,10 +52,10 @@ export function Footer() {
             <span className="flex items-baseline gap-2">
               <span className="font-display text-xl uppercase leading-none text-panel">FMA</span>
               <span aria-hidden className="tape-stripes h-2.5 w-6" />
-              <span className="label text-slate-2">Industries</span>
+              <span className="label text-slate">Industries</span>
             </span>
 
-            <p className="mt-5 max-w-xs text-sm leading-snug text-slate-2">
+            <p className="mt-5 max-w-xs text-sm leading-snug text-slate">
               Six trades, one contractor. {business.address.county} and surrounding areas for over{" "}
               {business.yearsExperience} years.
             </p>
@@ -72,7 +72,7 @@ export function Footer() {
               {business.smsHref && (
                 <a
                   href={business.smsHref}
-                  className="flex items-center gap-2.5 text-sm text-slate-2 transition-colors hover:text-panel"
+                  className="flex items-center gap-2.5 text-sm text-slate transition-colors hover:text-panel"
                 >
                   <MessageIcon />
                   Text us
@@ -82,11 +82,11 @@ export function Footer() {
 
             <dl className="mt-8 space-y-3 border-t border-rule-dark pt-6">
               <div>
-                <dt className="label text-slate-2">Base</dt>
+                <dt className="label text-slate">Base</dt>
                 <dd className="mt-1 text-sm text-panel">{fullAddress}</dd>
               </div>
               <div>
-                <dt className="label text-slate-2">Hours</dt>
+                <dt className="label text-slate">Hours</dt>
                 <dd className="tabular mt-1 text-sm leading-snug text-panel">
                   Mon to Fri {business.hours.weekday}
                   <br />
@@ -95,7 +95,7 @@ export function Footer() {
               </div>
               {business.emergency.available && (
                 <div>
-                  <dt className="label text-slate-2">Emergency</dt>
+                  <dt className="label text-slate">Emergency</dt>
                   <dd className="mt-1 text-sm text-panel">
                     24/7 · {emergencyPhone.display}
                   </dd>
@@ -118,11 +118,11 @@ export function Footer() {
             <LinkColumn heading="Company" items={company} />
 
             <div className="mt-9 border-t border-rule-dark pt-6">
-              <Label tone="light">Licensed &amp; insured</Label>
+              <Label>Licensed &amp; insured</Label>
               <dl className="mt-5 space-y-3">
                 {business.licenses.map((l) => (
                   <div key={l.trade}>
-                    <dt className="text-xs leading-snug text-slate-2">{l.trade}</dt>
+                    <dt className="text-xs leading-snug text-slate">{l.trade}</dt>
                     <dd className="tabular mt-0.5 font-mono text-xs text-panel">#{l.number}</dd>
                   </div>
                 ))}
@@ -131,7 +131,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="label mt-14 flex flex-col gap-3 border-t border-rule-dark pt-7 text-slate-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="label mt-14 flex flex-col gap-3 border-t border-rule-dark pt-7 text-slate sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {business.legalName}
           </p>

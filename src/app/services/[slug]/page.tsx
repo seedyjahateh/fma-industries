@@ -134,7 +134,7 @@ export default async function ServicePage(props: PageProps<"/services/[slug]">) 
 
           {service.emergencyPriority && (
             <Reveal>
-              <p className="label mt-10 text-slate-2">
+              <p className="label mt-10 text-slate">
                 Refrigeration and heating failures are triaged ahead of scheduled work.
               </p>
             </Reveal>

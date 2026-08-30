@@ -9,6 +9,9 @@ import { counties } from "@/config/areas";
  * the panel and stamped with the specs that matter. Presenting the business the
  * same way is both the most characteristic object in the trade and genuinely
  * the fastest way to answer "can you do my job".
+ *
+ * Carries `on-dark` because it is a dark card sitting inside the light hero.
+ * Its ancestors are light, so it has to opt into the dark token set itself.
  */
 
 function Rivet({ className }: { className: string }) {
@@ -30,7 +33,7 @@ export function DataPlate() {
   ];
 
   return (
-    <div className="relative bg-ink text-panel shadow-[0_24px_60px_-24px_rgba(14,20,23,0.45)]">
+    <div className="on-dark relative bg-ink text-panel shadow-[0_24px_60px_-24px_rgba(14,20,23,0.45)]">
       <Rivet className="left-2.5 top-2.5" />
       <Rivet className="right-2.5 top-2.5" />
       <Rivet className="bottom-2.5 left-2.5" />
@@ -50,14 +53,14 @@ export function DataPlate() {
               i < rows.length - 1 ? "border-b border-rule-dark" : ""
             }`}
           >
-            <dt className="label text-slate-2">{k}</dt>
+            <dt className="label text-slate">{k}</dt>
             <dd className="font-display tabular text-lg uppercase leading-none text-panel">{v}</dd>
           </div>
         ))}
       </dl>
 
       <div className="border-t border-rule-dark px-7 py-4">
-        <p className="label text-slate-2">
+        <p className="label text-slate">
           HVAC · Refrigeration · Kitchen · Plumbing · Electrical · Appliances
         </p>
       </div>

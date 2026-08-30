@@ -10,9 +10,11 @@ export function FAQ({
   faqs: { q: string; a: string }[];
   tone?: "dark" | "light";
 }) {
-  const rule = tone === "light" ? "border-rule-dark" : "border-rule";
+  // `border-rule` and `text-slate` flip themselves inside `.on-dark`; only the
+  // hard question colour still depends on the ground.
+  const rule = "border-rule";
   const q = tone === "light" ? "text-panel" : "text-ink";
-  const a = tone === "light" ? "text-slate-2" : "text-slate";
+  const a = "text-slate";
 
   return (
     <div className={`border-t ${rule}`}>

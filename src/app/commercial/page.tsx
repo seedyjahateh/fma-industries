@@ -170,7 +170,7 @@ export default function CommercialPage() {
                       className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-rule-dark py-4"
                     >
                       <dt className="font-display-tight text-sm uppercase text-panel">{term}</dt>
-                      <dd className="label text-slate-2">{def}</dd>
+                      <dd className="label text-slate">{def}</dd>
                     </div>
                   ))}
                 </dl>

@@ -124,7 +124,7 @@ export default function AboutPage() {
                   <h3 className="font-display-tight text-h3 uppercase text-panel">
                     {principle.title}
                   </h3>
-                  <p className="mt-3.5 text-sm leading-snug text-slate-2">{principle.body}</p>
+                  <p className="mt-3.5 text-sm leading-snug text-slate">{principle.body}</p>
                 </div>
               </Reveal>
             ))}

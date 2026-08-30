@@ -26,7 +26,9 @@ const STEPS = ["Property", "Problem", "Equipment", "Contact"] as const;
 ------------------------------------------------------------------------- */
 
 const inputClass =
-  "w-full border border-rule bg-panel px-3.5 py-3 text-sm text-ink placeholder:text-slate-dim focus:border-ink focus:outline-none";
+  // Placeholders carry example values, so they are content and take the full
+  // 4.5:1 bar. slate-dim would put them at 3.34:1.
+  "w-full border border-rule bg-panel px-3.5 py-3 text-sm text-ink placeholder:text-slate focus:border-ink focus:outline-none";
 
 function Field({
   label,
@@ -45,7 +47,7 @@ function Field({
         {label}
         {required && <span className="text-alarm">*</span>}
       </span>
-      {hint && <span className="mt-1 block text-xs text-slate-2">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-slate">{hint}</span>}
       <span className="mt-2.5 block">{children}</span>
     </label>
   );
@@ -234,7 +236,9 @@ export function IntakeForm() {
         {STEPS.map((label, i) => (
           <li key={label}>
             <div className={`h-1 w-full ${i <= step ? "bg-tape" : "bg-rule"}`} />
-            <p className={`label mt-2.5 ${i <= step ? "text-ink" : "text-slate-dim"}`}>
+            {/* Inactive steps use `slate`, not `slate-dim`: these are real text
+                labels, and slate-dim is reserved for icons at the 3:1 bar. */}
+            <p className={`label mt-2.5 ${i <= step ? "text-ink" : "text-slate"}`}>
               <span className="tabular">{String(i + 1).padStart(2, "0")}</span>
               <span className="ml-1.5 hidden sm:inline">{label}</span>
             </p>
@@ -289,7 +293,7 @@ export function IntakeForm() {
                   />
                 ))}
             </div>
-            <p className="mt-3 text-xs text-slate-2">
+            <p className="mt-3 text-xs text-slate">
               Not sure? Pick the closest and we&apos;ll sort it out.
             </p>
           </fieldset>
@@ -335,7 +339,7 @@ export function IntakeForm() {
                   <PhoneIcon />
                   {emergencyPhone.display}
                 </a>
-                <p className="mt-3 text-xs text-slate-2">
+                <p className="mt-3 text-xs text-slate">
                   You can still finish the form. It gives us the details before we arrive.
                 </p>
               </div>
@@ -440,7 +444,7 @@ export function IntakeForm() {
                     >
                       <span className="min-w-0 flex-1 truncate font-mono text-xs text-slate">
                         {photo.name}{" "}
-                        <span className="tabular text-slate-2">
+                        <span className="tabular text-slate">
                           {(photo.size / 1024 / 1024).toFixed(1)}MB
                         </span>
                       </span>
@@ -450,7 +454,7 @@ export function IntakeForm() {
                           setPhotos((prev) => prev.filter((_, idx) => idx !== i));
                           setPhotoNotice(null);
                         }}
-                        className="label shrink-0 text-slate-2 transition-colors hover:text-alarm"
+                        className="label shrink-0 text-slate transition-colors hover:text-alarm"
                       >
                         Remove
                       </button>
@@ -459,7 +463,7 @@ export function IntakeForm() {
                 </ul>
               )}
 
-              <p className="mt-4 text-xs text-slate-2">
+              <p className="mt-4 text-xs text-slate">
                 Up to {MAX_PHOTOS}. Large images are shrunk automatically before upload.
               </p>
             </div>
@@ -582,7 +586,7 @@ export function IntakeForm() {
             </div>
           )}
 
-          <p className="text-xs leading-relaxed text-slate-2">
+          <p className="text-xs leading-relaxed text-slate">
             These details are used to schedule and prepare for your service call. Nothing else, and
             we don&apos;t share them.
           </p>
@@ -606,7 +610,7 @@ export function IntakeForm() {
             type="button"
             onClick={() => canAdvance && go(step + 1)}
             disabled={!canAdvance}
-            className="group inline-flex items-center gap-2.5 bg-tape px-7 py-3.5 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-ink hover:text-tape disabled:cursor-not-allowed disabled:bg-panel-3 disabled:text-slate-2"
+            className="group inline-flex items-center gap-2.5 bg-tape px-7 py-3.5 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-ink hover:text-tape disabled:cursor-not-allowed disabled:bg-panel-3 disabled:text-slate"
           >
             Continue
             <ArrowIcon className="transition-transform group-hover:translate-x-1" />
@@ -615,7 +619,7 @@ export function IntakeForm() {
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="group inline-flex items-center gap-2.5 bg-tape px-7 py-3.5 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-ink hover:text-tape disabled:cursor-not-allowed disabled:bg-panel-3 disabled:text-slate-2"
+            className="group inline-flex items-center gap-2.5 bg-tape px-7 py-3.5 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-ink hover:text-tape disabled:cursor-not-allowed disabled:bg-panel-3 disabled:text-slate"
           >
             {status === "submitting" ? "Sending" : "Send request"}
             {status !== "submitting" && (

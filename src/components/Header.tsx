@@ -91,7 +91,7 @@ export function Header() {
                       <span className="font-display-tight block text-sm uppercase text-ink">
                         {s.name}
                       </span>
-                      <span className="label mt-1 block text-slate-2">{s.summary}</span>
+                      <span className="label mt-1 block text-slate">{s.summary}</span>
                     </Link>
                   ))}
                 </div>
@@ -151,7 +151,7 @@ export function Header() {
       {open && (
         <div className="h-[calc(100dvh-4.25rem)] overflow-y-auto bg-panel lg:hidden">
           <nav className="px-5 pb-12" aria-label="Mobile">
-            <p className="label py-4 text-slate-2">Services</p>
+            <p className="label py-4 text-slate">Services</p>
             {services.map((s) => (
               <Link
                 key={s.slug}
@@ -163,7 +163,7 @@ export function Header() {
               </Link>
             ))}
 
-            <p className="label pb-4 pt-9 text-slate-2">Company</p>
+            <p className="label pb-4 pt-9 text-slate">Company</p>
             {nav.map((item) => (
               <Link
                 key={item.href}

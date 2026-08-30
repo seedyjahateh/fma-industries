@@ -24,7 +24,7 @@ export function PlaceholderWarning() {
           </li>
         ))}
       </ul>
-      <p className="border-t border-rule p-3 text-slate-2">
+      <p className="border-t border-rule p-3 text-slate">
         Edit <code className="font-mono text-ink">src/config/business.ts</code>
       </p>
     </details>

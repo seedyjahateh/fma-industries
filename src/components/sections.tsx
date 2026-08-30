@@ -43,7 +43,7 @@ export function PageHero({
       <Container className="relative">
         {breadcrumb && (
           <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="label flex flex-wrap items-center gap-2 text-slate-2">
+            <ol className="label flex flex-wrap items-center gap-2 text-slate">
               {breadcrumb.map((crumb, i) => (
                 <li key={crumb.href} className="flex items-center gap-2">
                   {i > 0 && <span aria-hidden>/</span>}
@@ -144,7 +144,7 @@ export function ServiceGrid({
             <Reveal key={service.slug} delay={i * 50}>
               <Link
                 href={`/services/${service.slug}`}
-                className={`group relative flex h-full flex-col justify-between gap-10 p-7 transition-colors duration-200 hover:bg-ink lg:p-9 ${
+                className={`on-dark-hover group relative flex h-full flex-col justify-between gap-10 p-7 transition-colors duration-200 hover:bg-ink lg:p-9 ${
                   tone === "panel2" ? "bg-panel-2" : "bg-panel"
                 }`}
               >
@@ -152,9 +152,7 @@ export function ServiceGrid({
                   <h3 className="font-display-tight text-h3 uppercase leading-tight text-ink transition-colors group-hover:text-panel">
                     {service.name}
                   </h3>
-                  <p className="label mt-4 text-slate transition-colors group-hover:text-slate-2">
-                    {service.summary}
-                  </p>
+                  <p className="label mt-4 text-slate transition-colors">{service.summary}</p>
                 </div>
 
                 <span className="inline-flex items-center gap-2 self-start bg-ink px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-panel transition-colors group-hover:bg-tape group-hover:text-ink">
@@ -205,7 +203,7 @@ export function ProcessSteps() {
                 <h3 className="font-display-tight mt-6 text-base uppercase text-panel">
                   {step.title}
                 </h3>
-                <p className="mt-3 text-sm leading-snug text-slate-2">{step.body}</p>
+                <p className="mt-3 text-sm leading-snug text-slate">{step.body}</p>
               </div>
             </Reveal>
           ))}
@@ -321,7 +319,7 @@ export function AreaSection() {
                     {area.city}, NC
                   </span>
                   <span className="flex items-baseline gap-6">
-                    <span className="label hidden text-slate-2 sm:inline">{area.county}</span>
+                    <span className="label hidden text-slate sm:inline">{area.county}</span>
                     <span className="label tabular w-28 text-right text-slate">
                       {area.driveTime}
                     </span>
@@ -349,15 +347,15 @@ export function CTABand({
   lead?: ReactNode;
 }) {
   return (
-    <section className="grain grain-dark relative isolate overflow-hidden border-t border-rule bg-ink py-16 md:py-24">
+    <section className="on-dark grain grain-dark relative isolate overflow-hidden border-t border-rule bg-ink py-16 md:py-24">
       <HeroBackdrop tone="dark" />
 
-      <Container className="on-dark relative">
+      <Container className="relative">
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
-            <Label tone="light">Get service</Label>
+            <Label>Get service</Label>
             <h2 className="font-display mt-5 max-w-xl text-h2 uppercase text-panel">{title}</h2>
-            <p className="mt-5 max-w-md text-lead leading-snug text-slate-2">{lead}</p>
+            <p className="mt-5 max-w-md text-lead leading-snug text-slate">{lead}</p>
           </div>
 
           <div className="flex flex-wrap gap-2.5 lg:justify-end">

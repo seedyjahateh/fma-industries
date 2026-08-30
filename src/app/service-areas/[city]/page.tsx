@@ -134,13 +134,13 @@ export default async function AreaPage(props: PageProps<"/service-areas/[city]">
               <Reveal key={service.slug} delay={i * 55}>
                 <Link
                   href={`/services/${service.slug}`}
-                  className="group flex h-full flex-col justify-between gap-8 bg-panel-2 p-7 transition-colors hover:bg-ink lg:p-9"
+                  className="on-dark-hover group flex h-full flex-col justify-between gap-8 bg-panel-2 p-7 transition-colors hover:bg-ink lg:p-9"
                 >
                   <div>
                     <h3 className="font-display-tight text-h3 uppercase text-ink transition-colors group-hover:text-panel">
                       {service.name}
                     </h3>
-                    <p className="label mt-3.5 text-slate transition-colors group-hover:text-slate-2">
+                    <p className="label mt-3.5 text-slate transition-colors group-hover:text-slate">
                       {service.summary}
                     </p>
                   </div>

@@ -22,10 +22,12 @@
   --color-ink-2: #19232a;
   --color-ink-3: #24313a;
 
-  /* Text */
-  --color-slate: #5e6a72;
-  --color-slate-2: #8d99a1;
-  --color-slate-dim: #b3bcc2;
+  /* Text — LIGHT ground values. The .on-dark block below flips them.
+     There is only ONE muted grey available on this ground at AA, so the
+     light-side hierarchy is ink > slate > (icons). Depth comes from size,
+     weight and the mono face, not from lightness. */
+  --color-slate: #5d6870; /* muted text   4.95 on panel, 4.63 on panel-2 */
+  --color-slate-dim: #787e82; /* icons only   3.57 on panel, 3.34 on panel-2 */
 
   /* Safety yellow. Fills only. Black type sits on it. */
   --color-tape: #f5c400;
@@ -123,8 +125,35 @@ p {
   outline-offset: 2px;
 }
 
+/* ---------------------------------------------------------------------------
+   Dark-ground token set
+
+   No single grey can satisfy WCAG AA against both grounds. The window is
+   provably empty:
+
+       needs luminance <= 0.139  to pass 4.5:1 on panel #EDEFF0
+       needs luminance >= 0.204  to pass 4.5:1 on ink   #0E1417
+
+   So muted colours are declared per ground rather than once globally. Tailwind
+   v4 compiles every utility to `color: var(--color-slate)`, so redefining the
+   variable in this scope re-points every existing utility underneath it. No
+   markup needs to know which ground it is sitting on.
+
+   `.on-dark`       persistent dark surfaces (dark sections, footer, data plate)
+   `.on-dark-hover` light cards that turn dark on hover
+--------------------------------------------------------------------------- */
+
+.on-dark,
+.on-dark-hover:hover {
+  --color-slate: #8d99a1; /* 6.37 on ink, 5.48 on ink-2, 4.57 on ink-3 */
+  --color-slate-dim: #6b757d; /* icons, 3.95 on ink */
+  --color-rule: rgba(237, 239, 240, 0.16);
+  --color-rule-strong: rgba(237, 239, 240, 0.3);
+}
+
 /* On dark bands the focus ring has to flip or it disappears */
-.on-dark :focus-visible {
+.on-dark :focus-visible,
+.on-dark-hover:hover :focus-visible {
   outline-color: var(--color-tape);
 }
 

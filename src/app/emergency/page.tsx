@@ -193,7 +193,7 @@ export default function EmergencyPage() {
                   <h3 className="font-display-tight text-h3 uppercase text-panel">{block.title}</h3>
                   <ol className="mt-6 space-y-3.5">
                     {block.steps.map((step, index) => (
-                      <li key={step} className="flex gap-4 text-sm leading-snug text-slate-2">
+                      <li key={step} className="flex gap-4 text-sm leading-snug text-slate">
                         <span className="font-display tabular shrink-0 text-xs text-tape">
                           {String(index + 1).padStart(2, "0")}
                         </span>

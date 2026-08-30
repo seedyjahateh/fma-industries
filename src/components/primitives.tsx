@@ -74,21 +74,20 @@ export function Section({
    Type
 ========================================================================= */
 
-/** Mono micro-label. Carries the spec-sheet voice. */
+/**
+ * Mono micro-label. Carries the spec-sheet voice.
+ *
+ * No `tone` prop: `text-slate` re-points itself inside `.on-dark`, so the label
+ * reads correctly on either ground without being told which one it is on.
+ */
 export function Label({
   children,
-  tone = "dark",
   className = "",
 }: {
   children: ReactNode;
-  tone?: "dark" | "light";
   className?: string;
 }) {
-  return (
-    <p className={`label ${tone === "light" ? "text-slate-2" : "text-slate"} ${className}`}>
-      {children}
-    </p>
-  );
+  return <p className={`label text-slate ${className}`}>{children}</p>;
 }
 
 /**
@@ -110,7 +109,9 @@ export function SectionHeading({
 }) {
   return (
     <div className={`max-w-2xl ${className}`}>
-      {label && <Label tone={tone}>{label}</Label>}
+      {label && <Label>{label}</Label>}
+      {/* `tone` survives only where the foreground is a hard colour rather than
+          a token that flips: the heading is ink or panel, never muted. */}
       <h2
         className={`font-display mt-5 text-h2 uppercase ${
           tone === "light" ? "text-panel" : "text-ink"
@@ -118,15 +119,7 @@ export function SectionHeading({
       >
         {title}
       </h2>
-      {lead && (
-        <p
-          className={`mt-5 max-w-xl text-lead leading-snug ${
-            tone === "light" ? "text-slate-2" : "text-slate"
-          }`}
-        >
-          {lead}
-        </p>
-      )}
+      {lead && <p className="mt-5 max-w-xl text-lead leading-snug text-slate">{lead}</p>}
     </div>
   );
 }
@@ -145,13 +138,13 @@ export function SpecRow({
   v: ReactNode;
   tone?: "dark" | "light";
 }) {
-  const rule = tone === "light" ? "border-rule-dark" : "border-rule";
-  const key = tone === "light" ? "text-slate-2" : "text-slate";
+  // `border-rule` and `text-slate` both flip inside `.on-dark`; only the hard
+  // foreground colour still needs telling.
   const val = tone === "light" ? "text-panel" : "text-ink";
 
   return (
-    <div className={`flex items-baseline justify-between gap-6 border-b ${rule} py-3.5`}>
-      <dt className={`label ${key}`}>{k}</dt>
+    <div className="flex items-baseline justify-between gap-6 border-b border-rule py-3.5">
+      <dt className="label text-slate">{k}</dt>
       <dd className={`tabular text-right text-sm font-medium ${val}`}>{v}</dd>
     </div>
   );
@@ -177,9 +170,12 @@ export function Stat({
         }`}
       >
         {value}
-        {unit && <span className="text-tape">{unit}</span>}
+        {/* The unit is subordinate, not accented. Safety yellow is a fill in
+            this system, never coloured text: on the panel ground it measures
+            1.33:1, which is unreadable. */}
+        {unit && <span className="text-slate">{unit}</span>}
       </p>
-      <p className={`label mt-3 ${tone === "light" ? "text-slate-2" : "text-slate"}`}>{caption}</p>
+      <p className="label mt-3 text-slate">{caption}</p>
     </div>
   );
 }

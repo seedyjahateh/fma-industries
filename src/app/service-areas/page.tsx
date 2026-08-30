@@ -42,7 +42,7 @@ export default function ServiceAreasPage() {
               <Reveal key={area.slug} delay={i * 45}>
                 <Link
                   href={`/service-areas/${area.slug}`}
-                  className="group flex h-full flex-col justify-between gap-6 bg-panel p-7 transition-colors hover:bg-ink lg:p-9"
+                  className="on-dark-hover group flex h-full flex-col justify-between gap-6 bg-panel p-7 transition-colors hover:bg-ink lg:p-9"
                 >
                   <div>
                     <div className="flex items-start justify-between gap-5">
@@ -51,12 +51,12 @@ export default function ServiceAreasPage() {
                       </h2>
                       <ArrowIcon className="mt-1.5 shrink-0 text-slate-dim transition-all group-hover:translate-x-1 group-hover:text-tape" />
                     </div>
-                    <p className="label mt-3 text-slate transition-colors group-hover:text-slate-2">
+                    <p className="label mt-3 text-slate transition-colors group-hover:text-slate">
                       {area.county} · {area.driveTime}
                     </p>
                   </div>
 
-                  <p className="text-sm leading-snug text-slate transition-colors group-hover:text-slate-2">
+                  <p className="text-sm leading-snug text-slate transition-colors group-hover:text-slate">
                     {area.intro}
                   </p>
                 </Link>

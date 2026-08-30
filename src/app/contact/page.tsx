@@ -61,7 +61,7 @@ export default function ContactPage() {
                 >
                   <PhoneIcon className="h-5 w-5 shrink-0 text-slate" />
                   <span>
-                    <span className="label block text-slate-2">Phone</span>
+                    <span className="label block text-slate">Phone</span>
                     <span className="font-display mt-1.5 block text-xl uppercase text-ink transition-colors group-hover:text-cold sm:text-2xl">
                       {business.phoneDisplay}
                     </span>
@@ -75,7 +75,7 @@ export default function ContactPage() {
                   >
                     <MessageIcon className="h-5 w-5 shrink-0 text-slate" />
                     <span>
-                      <span className="label block text-slate-2">Text</span>
+                      <span className="label block text-slate">Text</span>
                       <span className="mt-1.5 block text-base font-medium text-ink transition-colors group-hover:text-cold">
                         Send us a message
                       </span>
@@ -89,7 +89,7 @@ export default function ContactPage() {
                 >
                   <MailIcon className="h-5 w-5 shrink-0 text-slate" />
                   <span>
-                    <span className="label block text-slate-2">Email</span>
+                    <span className="label block text-slate">Email</span>
                     <span className="mt-1.5 block text-base font-medium text-ink transition-colors group-hover:text-cold">
                       {business.email}
                     </span>
@@ -99,7 +99,7 @@ export default function ContactPage() {
                 <div className="flex items-start gap-5 border-b border-rule py-6">
                   <PinIcon className="mt-1 h-5 w-5 shrink-0 text-slate" />
                   <span>
-                    <span className="label block text-slate-2">Based in</span>
+                    <span className="label block text-slate">Based in</span>
                     <span className="mt-1.5 block text-base font-medium text-ink">
                       {fullAddress}
                     </span>
