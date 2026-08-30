@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   FMA Industries — "Data Plate"
+
+   Built from the two objects that define this trade: the stamped equipment
+   data plate, and the lockout tag hung on a unit being serviced.
+
+   Galvanized panel ground. Steel blue-black ink. Safety yellow used the way
+   real hazard tape is used: a solid block with black type on it, never as
+   coloured text. Specs, labels and numbers set in mono like a spec sheet.
+=========================================================================== */
+
+@theme {
+  /* Ground — cool blue-grey bias, the colour of a painted equipment panel */
+  --color-panel: #edeff0;
+  --color-panel-2: #e4e8ea;
+  --color-panel-3: #d8dee1;
+
+  /* Ink — steel, never pure black */
+  --color-ink: #0e1417;
+  --color-ink-2: #19232a;
+  --color-ink-3: #24313a;
+
+  /* Text */
+  --color-slate: #5e6a72;
+  --color-slate-2: #8d99a1;
+  --color-slate-dim: #b3bcc2;
+
+  /* Safety yellow. Fills only. Black type sits on it. */
+  --color-tape: #f5c400;
+  --color-tape-hi: #ffd21a;
+
+  /* Refrigerant blue, used sparingly for cold-side cues */
+  --color-cold: #0b6fa4;
+
+  /* Alarm red, reserved for genuine emergencies */
+  --color-alarm: #c8102e;
+
+  /* Rules carry the spec-sheet grid */
+  --color-rule: rgba(14, 20, 23, 0.14);
+  --color-rule-strong: rgba(14, 20, 23, 0.28);
+  --color-rule-dark: rgba(237, 239, 240, 0.16);
+  --color-rule-dark-strong: rgba(237, 239, 240, 0.3);
+
+  /* Type */
+  --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-instrument), "Instrument Sans", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Scale */
+  --text-micro: 0.6875rem;
+  --text-display: clamp(2.5rem, 7.5vw, 6.5rem);
+  --text-display-sm: clamp(2rem, 4.6vw, 3.75rem);
+  --text-h2: clamp(1.625rem, 3.4vw, 2.75rem);
+  --text-h3: clamp(1.125rem, 1.8vw, 1.5rem);
+  --text-lead: clamp(1.0625rem, 1.35vw, 1.25rem);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+
+html {
+  background-color: var(--color-panel);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-panel);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+/* Display type is set wide. The expanded width is the signature. */
+.font-display {
+  font-family: var(--font-display);
+  font-stretch: 118%;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.94;
+}
+
+.font-display-tight {
+  font-family: var(--font-display);
+  font-stretch: 100%;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Mono micro-label. The spec-sheet voice. */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Digits line up in columns wherever they're compared */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background-color: var(--color-tape);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+/* On dark bands the focus ring has to flip or it disappears */
+.on-dark :focus-visible {
+  outline-color: var(--color-tape);
+}
+
+/* ---------------------------------------------------------------------------
+   Surface texture
+
+   A fine grain over the panel ground so large flat areas read as powder-coated
+   sheet rather than flat #EEE. Generated, not an asset request.
+--------------------------------------------------------------------------- */
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
+}
+
+.grain-dark::before {
+  mix-blend-mode: screen;
+  opacity: 0.16;
+}
+
+/* ---------------------------------------------------------------------------
+   Spec-sheet devices
+--------------------------------------------------------------------------- */
+
+/* Hairline column grid, like a drawing sheet */
+.sheet-grid {
+  background-image: linear-gradient(to right, var(--color-rule) 1px, transparent 1px);
+  background-size: 12.5% 100%;
+}
+
+.sheet-grid-dark {
+  background-image: linear-gradient(to right, var(--color-rule-dark) 1px, transparent 1px);
+  background-size: 12.5% 100%;
+}
+
+/* Hazard tape: the one place saturated yellow appears at scale */
+.tape-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-tape) 0 14px,
+    var(--color-ink) 14px 28px
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+--------------------------------------------------------------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Brand marquee. Content is rendered twice; one full set is 50% of the track. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquee {
+    animation: marquee 55s linear infinite;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile action bar clearance */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 4.5rem;
+  }
+}
