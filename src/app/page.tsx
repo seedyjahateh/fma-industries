@@ -5,6 +5,7 @@ import { residentialServices } from "@/config/services";
 import { Reveal } from "@/components/Reveal";
 import { HeroBackdrop } from "@/components/HeroBackdrop";
 import { DataPlate } from "@/components/DataPlate";
+import { WorkStrip } from "@/components/Photos";
 import {
   Container,
   Section,
@@ -228,6 +229,10 @@ export default function HomePage() {
       </Section>
 
       <ProcessSteps />
+
+      {/* Renders nothing until src/config/photos.ts has entries. */}
+      <WorkStrip />
+
       <AreaSection />
       <BrandStrip />
 
