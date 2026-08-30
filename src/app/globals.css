@@ -248,9 +248,28 @@ p {
   }
 }
 
+/* Transform-only variant for the largest contentful element.
+   `.rise` fills `backwards`, so its element sits at opacity 0 until the
+   animation runs. An invisible element has not painted, which pushed measured
+   LCP out by roughly a second on throttled mobile. Anything that is or may
+   become the LCP element animates position only and paints on the first
+   frame. */
+@keyframes rise-in-place {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .rise {
     animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .rise-still {
+    animation: rise-in-place 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   }
 }
 

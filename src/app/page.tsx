@@ -53,7 +53,8 @@ export default function HomePage() {
                 </Label>
               </Rise>
 
-              <Rise delay={70}>
+              {/* fade={false}: this h1 is the LCP element. */}
+              <Rise delay={70} fade={false}>
                 <h1 className="font-display mt-7 text-display uppercase text-ink">
                   When it breaks,
                   <br />

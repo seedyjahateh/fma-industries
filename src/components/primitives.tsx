@@ -12,17 +12,24 @@ import type { ComponentProps, ElementType, ReactNode } from "react";
 export function Rise({
   children,
   delay = 0,
+  fade = true,
   as: Tag = "div",
   className = "",
 }: {
   children: ReactNode;
   delay?: number;
+  /**
+   * Set false for anything that is or could be the largest contentful element.
+   * The fading variant holds it at opacity 0 until the animation runs, which
+   * delays LCP; the still variant animates position only and paints at once.
+   */
+  fade?: boolean;
   as?: ElementType;
   className?: string;
 }) {
   return (
     <Tag
-      className={`rise ${className}`}
+      className={`${fade ? "rise" : "rise-still"} ${className}`}
       style={delay ? { animationDelay: `${delay}ms` } : undefined}
     >
       {children}

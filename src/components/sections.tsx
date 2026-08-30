@@ -58,7 +58,8 @@ export function PageHero({
 
         <div className={aside ? "grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:items-end lg:gap-16" : ""}>
           <div>
-            <Rise>
+            {/* fade={false}: on inner pages this h1 is the LCP element. */}
+            <Rise fade={false}>
               {label && <Label>{label}</Label>}
               <h1 className="font-display mt-5 max-w-3xl text-display-sm uppercase text-ink">
                 {title}

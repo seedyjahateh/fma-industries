@@ -57,7 +57,11 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-[82rem] items-center justify-between px-5 py-4 md:px-10">
-        <Link href="/" aria-label={`${business.name}, home`}>
+        {/* No aria-label: the wordmark's own text already gives the accessible
+            name "FMA Industries". Overriding it broke WCAG 2.5.3 Label in
+            Name, so voice-control users saying the visible label could miss
+            the link. */}
+        <Link href="/">
           <Wordmark />
         </Link>
 

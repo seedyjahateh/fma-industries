@@ -123,7 +123,9 @@ export function Footer() {
                 {business.licenses.map((l) => (
                   <div key={l.trade}>
                     <dt className="text-xs leading-snug text-slate">{l.trade}</dt>
-                    <dd className="tabular mt-0.5 font-mono text-xs text-panel">#{l.number}</dd>
+                    <dd className="tabular mt-0.5 font-mono text-xs text-panel">
+                      {l.number ? `#${l.number}` : "Number on request"}
+                    </dd>
                   </div>
                 ))}
               </dl>

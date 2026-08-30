@@ -80,10 +80,19 @@ export const business = {
   yearsExperience: 20,
   foundedYear: TODO(2005),
 
-  licenses: TODO([
-    { trade: "NC Plumbing / Heating Contractor", number: "PENDING CONFIRMATION" },
-    { trade: "NC Electrical Contractor", number: "PENDING CONFIRMATION" },
-    { trade: "EPA Section 608 Universal", number: "PENDING CONFIRMATION" },
+  /**
+   * `number: null` means "held, but the number is not confirmed yet". The UI
+   * then shows the trade and "number on request" instead of printing a
+   * placeholder, so an unfinished site still reads as finished and honest.
+   *
+   * Remove any entry he does not actually hold. North Carolina licenses
+   * plumbing/heating and electrical through separate boards, and advertising
+   * a trade without the licence is a real exposure.
+   */
+  licenses: TODO<{ trade: string; number: string | null }[]>([
+    { trade: "NC Plumbing / Heating Contractor", number: null },
+    { trade: "NC Electrical Contractor", number: null },
+    { trade: "EPA Section 608 Universal", number: null },
   ]),
   insured: TODO(true),
 

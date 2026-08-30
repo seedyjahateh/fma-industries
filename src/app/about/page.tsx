@@ -145,7 +145,11 @@ export default function AboutPage() {
             <Reveal delay={80}>
               <dl className="border-t border-rule">
                 {business.licenses.map((license) => (
-                  <SpecRow key={license.trade} k={license.trade} v={`#${license.number}`} />
+                  <SpecRow
+                    key={license.trade}
+                    k={license.trade}
+                    v={license.number ? `#${license.number}` : "Number on request"}
+                  />
                 ))}
                 {business.insured && <SpecRow k="Insurance" v="Certificate on request" />}
                 <SpecRow k="In trade" v={`${business.yearsExperience}+ years`} />
