@@ -135,8 +135,13 @@ export function Footer() {
           <p>
             © {year} {business.legalName}
           </p>
-          <p>
-            Serving {business.address.city}, {business.address.state} and surrounding communities
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>
+              Serving {business.address.city}, {business.address.state} and surrounding communities
+            </span>
+            <Link href="/privacy" className="underline transition-colors hover:text-panel">
+              Privacy
+            </Link>
           </p>
         </div>
       </Container>

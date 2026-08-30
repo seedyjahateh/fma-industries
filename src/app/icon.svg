@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>FMA Industries</title>
+  <!-- Steel ground, matching --color-ink. -->
+  <rect width="64" height="64" fill="#0e1417"/>
+  <!-- Hazard-tape chevrons, the wordmark's mark. Drawn as skewed bars so the
+       icon still reads at 16px where letterforms would not. -->
+  <g fill="#f5c400">
+    <path d="M14 44 L28 20 h9 L23 44 Z"/>
+    <path d="M31 44 L45 20 h9 L40 44 Z"/>
+  </g>
+</svg>

@@ -588,7 +588,11 @@ export function IntakeForm() {
 
           <p className="text-xs leading-relaxed text-slate">
             These details are used to schedule and prepare for your service call. Nothing else, and
-            we don&apos;t share them.
+            we don&apos;t share them.{" "}
+            <a href="/privacy" className="text-ink underline">
+              How we handle your details
+            </a>
+            .
           </p>
         </div>
       )}
