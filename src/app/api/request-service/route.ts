@@ -215,18 +215,30 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM;
+  // business.email is the destination. Until the owner has an address there is
+  // nowhere to deliver, and dropping a lead silently is the worst outcome here.
+  const to = business.email;
 
-  if (!apiKey || !from) {
+  if (!apiKey || !from || !to) {
     // In development the form stays testable without credentials.
     if (process.env.NODE_ENV !== "production") {
       console.warn(
-        "\n[request-service] RESEND_API_KEY / RESEND_FROM not set — logging instead of sending.\n",
+        `\n[request-service] Not sending. Missing: ${[
+          !apiKey && "RESEND_API_KEY",
+          !from && "RESEND_FROM",
+          !to && "business.email (owner has no address yet)",
+        ]
+          .filter(Boolean)
+          .join(", ")}\n`,
         { name, phone, address, city, ...fields, photos: attachments.length }
       );
       return NextResponse.json({ ok: true, delivered: false });
     }
 
-    console.error("[request-service] Email is not configured — a lead was not delivered.");
+    console.error(
+      "[request-service] Email is not configured — a lead was not delivered.",
+      { hasApiKey: Boolean(apiKey), hasFrom: Boolean(from), hasDestination: Boolean(to) }
+    );
     return NextResponse.json(
       { ok: false, error: `We couldn't send that. Please call us at ${business.phoneDisplay}.` },
       { status: 500 }
@@ -236,7 +248,7 @@ export async function POST(request: Request) {
   try {
     await sendEmail({
       from,
-      to: [business.email],
+      to: [to],
       subject: `${isEmergency ? "EMERGENCY · " : ""}${fields.service || "Service request"} — ${
         fields.company || name
       } (${city})`,

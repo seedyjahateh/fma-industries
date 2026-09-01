@@ -25,8 +25,10 @@ export function localBusinessSchema() {
     description: business.description,
     url: business.siteUrl,
     telephone: business.phoneDisplay,
-    email: business.email,
-    foundingDate: String(business.foundedYear),
+    // Omitted rather than guessed: an email that does not exist and a founding
+    // year nobody has confirmed are worse than absent properties.
+    ...(business.email ? { email: business.email } : {}),
+    ...(business.foundedYear ? { foundingDate: String(business.foundedYear) } : {}),
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",

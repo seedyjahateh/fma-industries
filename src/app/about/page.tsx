@@ -10,7 +10,7 @@ import type { Metadata } from "next";
  * what would turn this page from good into genuinely persuasive.
  */
 
-import { business, fullAddress } from "@/config/business";
+import { business, fullAddress, confirmedLicenses } from "@/config/business";
 import { Reveal } from "@/components/Reveal";
 import {
   Container,
@@ -144,10 +144,10 @@ export default function AboutPage() {
 
             <Reveal delay={80}>
               <dl className="border-t border-rule">
-                {business.licenses.map((license) => (
+                {confirmedLicenses.map((license) => (
                   <SpecRow
                     key={license.trade}
-                    k={license.trade}
+                    k={license.detail ? `${license.trade} (${license.detail})` : license.trade}
                     v={license.number ? `#${license.number}` : "Number on request"}
                   />
                 ))}

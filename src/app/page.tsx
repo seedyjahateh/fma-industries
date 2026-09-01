@@ -49,8 +49,10 @@ export default function HomePage() {
           <div className="grid gap-14 lg:grid-cols-[1.45fr_1fr] lg:items-end lg:gap-20">
             <div>
               <Rise>
+                {/* No founding year: nobody has confirmed one. The 20+ figure
+                    comes from the owner's own brief. */}
                 <Label>
-                  {business.address.city}, NC · Est. {business.foundedYear}
+                  {business.address.city}, NC · {business.yearsExperience}+ years in the trade
                 </Label>
               </Rise>
 

@@ -128,10 +128,16 @@ export default function PrivacyPage() {
 
             <Clause heading="Getting your details removed">
               <p>
-                Ask, and we will delete them. Call {business.phoneDisplay} or email{" "}
-                <a href={`mailto:${business.email}`} className="text-cold underline">
-                  {business.email}
-                </a>
+                Ask, and we will delete them. Call {business.phoneDisplay}
+                {business.email && (
+                  <>
+                    {" "}
+                    or email{" "}
+                    <a href={`mailto:${business.email}`} className="text-cold underline">
+                      {business.email}
+                    </a>
+                  </>
+                )}
                 , tell us roughly when you contacted us, and we will remove the request and any
                 photographs from our mail.
               </p>
@@ -168,11 +174,13 @@ export default function PrivacyPage() {
                     {business.phoneDisplay}
                   </a>
                 </p>
-                <p className="mt-1">
-                  <a href={`mailto:${business.email}`} className="text-cold underline">
-                    {business.email}
-                  </a>
-                </p>
+                {business.email && (
+                  <p className="mt-1">
+                    <a href={`mailto:${business.email}`} className="text-cold underline">
+                      {business.email}
+                    </a>
+                  </p>
+                )}
               </div>
             </Clause>
           </div>

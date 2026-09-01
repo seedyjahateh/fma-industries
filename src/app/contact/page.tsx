@@ -83,18 +83,22 @@ export default function ContactPage() {
                   </a>
                 )}
 
-                <a
-                  href={`mailto:${business.email}`}
-                  className="group flex items-center gap-5 border-b border-rule py-6"
-                >
-                  <MailIcon className="h-5 w-5 shrink-0 text-slate" />
-                  <span>
-                    <span className="label block text-slate">Email</span>
-                    <span className="mt-1.5 block text-base font-medium text-ink transition-colors group-hover:text-cold">
-                      {business.email}
+                {/* Hidden until a real address exists. Better no email row than
+                    one that bounces. */}
+                {business.email && (
+                  <a
+                    href={`mailto:${business.email}`}
+                    className="group flex items-center gap-5 border-b border-rule py-6"
+                  >
+                    <MailIcon className="h-5 w-5 shrink-0 text-slate" />
+                    <span>
+                      <span className="label block text-slate">Email</span>
+                      <span className="mt-1.5 block text-base font-medium text-ink transition-colors group-hover:text-cold">
+                        {business.email}
+                      </span>
                     </span>
-                  </span>
-                </a>
+                  </a>
+                )}
 
                 <div className="flex items-start gap-5 border-b border-rule py-6">
                   <PinIcon className="mt-1 h-5 w-5 shrink-0 text-slate" />

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { business, fullAddress, emergencyPhone } from "@/config/business";
+import { business, fullAddress, emergencyPhone, confirmedLicenses } from "@/config/business";
 import { services } from "@/config/services";
 import { areas } from "@/config/areas";
 import { Container, Label, PhoneIcon, MessageIcon } from "./primitives";
@@ -120,14 +120,25 @@ export function Footer() {
             <div className="mt-9 border-t border-rule-dark pt-6">
               <Label>Licensed &amp; insured</Label>
               <dl className="mt-5 space-y-3">
-                {business.licenses.map((l) => (
+                {confirmedLicenses.map((l) => (
                   <div key={l.trade}>
-                    <dt className="text-xs leading-snug text-slate">{l.trade}</dt>
+                    <dt className="text-xs leading-snug text-slate">
+                      {l.trade}
+                      {l.detail ? ` · ${l.detail}` : ""}
+                    </dt>
                     <dd className="tabular mt-0.5 font-mono text-xs text-panel">
                       {l.number ? `#${l.number}` : "Number on request"}
                     </dd>
                   </div>
                 ))}
+                {business.insured && (
+                  <div>
+                    <dt className="text-xs leading-snug text-slate">General liability</dt>
+                    <dd className="mt-0.5 font-mono text-xs text-panel">
+                      Certificate on request
+                    </dd>
+                  </div>
+                )}
               </dl>
             </div>
           </div>
