@@ -15,6 +15,7 @@ import {
   PhoneIcon,
 } from "@/components/primitives";
 import { PageHero, CapabilityRail, CTABand } from "@/components/sections";
+import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Maintenance Plans",
@@ -91,7 +92,8 @@ const faqs = [
   },
 ];
 
-export default function MaintenancePlansPage() {
+export default async function MaintenancePlansPage() {
+  const settings = await getSettings();
   return (
     <>
       <JsonLd data={faqSchema(faqs)} />
@@ -205,11 +207,11 @@ export default function MaintenancePlansPage() {
             <p className="mt-8 flex flex-wrap items-center gap-2 text-sm text-slate">
               Not sure which fits?
               <a
-                href={business.phoneHref}
+                href={settings.phoneHref}
                 className="inline-flex items-center gap-2 font-semibold text-ink hover:underline"
               >
                 <PhoneIcon />
-                {business.phoneDisplay}
+                {settings.phoneDisplay}
               </a>
               Describe your equipment. Takes five minutes.
             </p>

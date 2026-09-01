@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { business, emergencyPhone } from "@/config/business";
+import { business } from "@/config/business";
+import { getSettings } from "@/lib/settings";
 import { residentialServices } from "@/config/services";
 import { Reveal } from "@/components/Reveal";
 import { HeroBackdrop } from "@/components/HeroBackdrop";
@@ -36,7 +37,8 @@ const segments = [
   { title: "Light industrial", spec: "Process cooling · Makeup air · Circuits" },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const settings = await getSettings();
   return (
     <>
       {/* ================================================================
@@ -74,9 +76,9 @@ export default function HomePage() {
 
               <Rise delay={210}>
                 <div className="mt-9 flex flex-wrap gap-2.5">
-                  <Button href={business.phoneHref} variant="tape" className="px-7 py-4">
+                  <Button href={settings.phoneHref} variant="tape" className="px-7 py-4">
                     <PhoneIcon />
-                    {business.phoneDisplay}
+                    {settings.phoneDisplay}
                   </Button>
                   <Button href="/request-service" variant="outline" className="px-7 py-4">
                     Request service
@@ -85,11 +87,11 @@ export default function HomePage() {
                 </div>
               </Rise>
 
-              {business.emergency.available && (
+              {settings.emergency.available && (
                 <Rise delay={280}>
                   <p className="mt-7 flex items-center gap-2.5 text-sm text-slate">
                     <BoltIcon className="h-3.5 w-3.5 text-cold" />
-                    Walk-in down after hours? Call {emergencyPhone.display}.
+                    Walk-in down after hours? Call {settings.emergency.display}.
                   </p>
                 </Rise>
               )}

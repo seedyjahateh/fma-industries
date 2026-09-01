@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { business } from "@/config/business";
+import { useSettings } from "./SettingsProvider";
 import { services } from "@/config/services";
 import { PhoneIcon, ArrowIcon } from "./primitives";
 
@@ -30,6 +30,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
+  const settings = useSettings();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -116,11 +117,11 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <a
-            href={business.phoneHref}
+            href={settings.phoneHref}
             className="hidden items-center gap-2 bg-tape px-5 py-3 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:bg-ink hover:text-tape md:inline-flex"
           >
             <PhoneIcon />
-            {business.phoneDisplay}
+            {settings.phoneDisplay}
           </a>
 
           <button

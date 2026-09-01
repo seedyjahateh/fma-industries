@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 import { business } from "@/config/business";
+import { getSettings } from "./settings";
 
 /**
  * Shared Open Graph card renderer.
@@ -67,6 +68,7 @@ export async function renderOgImage({
   title: string;
 }) {
   const { display, mono } = await fonts();
+  const settings = await getSettings();
 
   return new ImageResponse(
     (
@@ -161,7 +163,7 @@ export async function renderOgImage({
               {business.address.city}, {business.address.state}
             </div>
             <div style={{ display: "flex", marginLeft: "auto", color: INK }}>
-              {business.phoneDisplay}
+              {settings.phoneDisplay}
             </div>
           </div>
         </div>

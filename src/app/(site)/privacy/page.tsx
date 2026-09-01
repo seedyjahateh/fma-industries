@@ -16,6 +16,7 @@ import Link from "next/link";
 import { business, fullAddress } from "@/config/business";
 import { Container, Section, Label } from "@/components/primitives";
 import { PageHero } from "@/components/sections";
+import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Privacy",
@@ -35,7 +36,8 @@ function Clause({ heading, children }: { heading: string; children: React.ReactN
   );
 }
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const settings = await getSettings();
   return (
     <>
       <PageHero
@@ -67,7 +69,7 @@ export default function PrivacyPage() {
               </ul>
               <p>
                 You do not need an account, and there is nothing to sign up for. If you would rather
-                give none of this to a website, call {business.phoneDisplay} instead.
+                give none of this to a website, call {settings.phoneDisplay} instead.
               </p>
             </Clause>
 
@@ -128,13 +130,13 @@ export default function PrivacyPage() {
 
             <Clause heading="Getting your details removed">
               <p>
-                Ask, and we will delete them. Call {business.phoneDisplay}
-                {business.email && (
+                Ask, and we will delete them. Call {settings.phoneDisplay}
+                {settings.email && (
                   <>
                     {" "}
                     or email{" "}
-                    <a href={`mailto:${business.email}`} className="text-cold underline">
-                      {business.email}
+                    <a href={`mailto:${settings.email}`} className="text-cold underline">
+                      {settings.email}
                     </a>
                   </>
                 )}
@@ -170,14 +172,14 @@ export default function PrivacyPage() {
                 <p className="mt-4 text-ink">{business.name}</p>
                 <p className="mt-1">{fullAddress}</p>
                 <p className="mt-3">
-                  <a href={business.phoneHref} className="font-semibold text-ink hover:text-cold">
-                    {business.phoneDisplay}
+                  <a href={settings.phoneHref} className="font-semibold text-ink hover:text-cold">
+                    {settings.phoneDisplay}
                   </a>
                 </p>
-                {business.email && (
+                {settings.email && (
                   <p className="mt-1">
-                    <a href={`mailto:${business.email}`} className="text-cold underline">
-                      {business.email}
+                    <a href={`mailto:${settings.email}`} className="text-cold underline">
+                      {settings.email}
                     </a>
                   </p>
                 )}

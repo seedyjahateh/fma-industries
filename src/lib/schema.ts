@@ -8,10 +8,15 @@
 import { business, fullAddress } from "@/config/business";
 import { services, type Service } from "@/config/services";
 import { areas, additionalTowns } from "@/config/areas";
+import type { SiteSettings } from "./settings";
 
 const BUSINESS_ID = `${business.siteUrl}/#business`;
 
-export function localBusinessSchema() {
+/**
+ * Takes live settings so that hours and phone edited in the admin panel reach
+ * `openingHoursSpecification` and `telephone`, not just the visible page.
+ */
+export function localBusinessSchema(settings: SiteSettings) {
   const sameAs = [business.social.google, business.social.facebook].filter(
     (u): u is string => Boolean(u)
   );
@@ -24,10 +29,10 @@ export function localBusinessSchema() {
     legalName: business.legalName,
     description: business.description,
     url: business.siteUrl,
-    telephone: business.phoneDisplay,
+    telephone: settings.phoneDisplay,
     // Omitted rather than guessed: an email that does not exist and a founding
     // year nobody has confirmed are worse than absent properties.
-    ...(business.email ? { email: business.email } : {}),
+    ...(settings.email ? { email: settings.email } : {}),
     ...(business.foundedYear ? { foundingDate: String(business.foundedYear) } : {}),
     priceRange: "$$",
     address: {
@@ -44,7 +49,7 @@ export function localBusinessSchema() {
       latitude: business.geo.lat,
       longitude: business.geo.lng,
     },
-    openingHoursSpecification: business.openingHours.map((spec) => ({
+    openingHoursSpecification: settings.openingHours.map((spec) => ({
       "@type": "OpeningHoursSpecification",
       dayOfWeek: spec.days,
       opens: spec.opens,

@@ -3,12 +3,20 @@ import { Archivo, IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 
 import { business } from "@/config/business";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { StickyCallBar } from "@/components/StickyCallBar";
-import { PlaceholderWarning } from "@/components/PlaceholderWarning";
-import { JsonLd } from "@/components/JsonLd";
-import { localBusinessSchema } from "@/lib/schema";
+import { getSettings } from "@/lib/settings";
+import { SettingsProvider } from "@/components/SettingsProvider";
+
+/**
+ * Root layout: document shell only.
+ *
+ * The marketing chrome (header, footer, sticky call bar, LocalBusiness JSON-LD)
+ * lives in the `(site)` route group instead, so the admin panel does not render
+ * inside a sales header with a "Call now" bar over it.
+ *
+ * Settings are read once here, from a cached read, and shared with Client
+ * Components through context. Awaiting a cached function does not make routes
+ * dynamic; reading cookies or headers would.
+ */
 
 /**
  * Display face is set on Archivo's width axis, not just its weight axis. The
@@ -79,7 +87,9 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const settings = await getSettings();
+
   return (
     <html
       lang="en"
@@ -87,22 +97,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${archivo.variable} ${instrument.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-panel">
-        <JsonLd data={localBusinessSchema()} />
-
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-tape focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-ink"
-        >
-          Skip to content
-        </a>
-
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <StickyCallBar />
-        <PlaceholderWarning />
+        <SettingsProvider value={settings}>{children}</SettingsProvider>
       </body>
     </html>
   );

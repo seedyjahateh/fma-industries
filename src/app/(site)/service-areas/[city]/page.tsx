@@ -17,6 +17,7 @@ import {
   ArrowIcon,
 } from "@/components/primitives";
 import { PageHero, CapabilityRail, EmergencyCallout, CTABand } from "@/components/sections";
+import { getSettings } from "@/lib/settings";
 
 export function generateStaticParams() {
   return areas.map((area) => ({ city: area.slug }));
@@ -42,6 +43,7 @@ export async function generateMetadata(
 }
 
 export default async function AreaPage(props: PageProps<"/service-areas/[city]">) {
+  const settings = await getSettings();
   const { city } = await props.params;
   const area = getArea(city);
   if (!area) notFound();
@@ -85,7 +87,7 @@ export default async function AreaPage(props: PageProps<"/service-areas/[city]">
                 <SpecRow k="Trades" v="All six" />
                 <SpecRow
                   k="Emergency"
-                  v={business.emergency.available ? "24 / 7" : "By appointment"}
+                  v={settings.emergency.available ? "24 / 7" : "By appointment"}
                 />
               </dl>
             </div>
@@ -204,7 +206,7 @@ export default async function AreaPage(props: PageProps<"/service-areas/[city]">
 
       <CTABand
         title={`${area.city}. Tell us what's broken.`}
-        lead={`Call ${emergencyPhone.display} for anything urgent, or send the equipment details and we arrive prepared.`}
+        lead={`Call ${settings.emergency.display} for anything urgent, or send the equipment details and we arrive prepared.`}
       />
     </>
   );

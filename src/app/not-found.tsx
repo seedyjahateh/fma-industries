@@ -4,8 +4,10 @@ import { business } from "@/config/business";
 import { services } from "@/config/services";
 import { HeroBackdrop } from "@/components/HeroBackdrop";
 import { Container, Label, Button, ArrowIcon, PhoneIcon } from "@/components/primitives";
+import { getSettings } from "@/lib/settings";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const settings = await getSettings();
   return (
     <section className="grain relative isolate flex min-h-[75vh] items-center overflow-hidden bg-panel pb-20 pt-36">
       <HeroBackdrop />
@@ -23,9 +25,9 @@ export default function NotFound() {
         </p>
 
         <div className="mt-8 flex flex-wrap gap-2.5">
-          <Button href={business.phoneHref} variant="tape">
+          <Button href={settings.phoneHref} variant="tape">
             <PhoneIcon />
-            {business.phoneDisplay}
+            {settings.phoneDisplay}
           </Button>
           <Button href="/" variant="outline">
             Back to home

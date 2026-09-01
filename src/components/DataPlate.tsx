@@ -1,4 +1,5 @@
 import { business } from "@/config/business";
+import { getSettings } from "@/lib/settings";
 import { services } from "@/config/services";
 import { counties } from "@/config/areas";
 
@@ -23,12 +24,13 @@ function Rivet({ className }: { className: string }) {
   );
 }
 
-export function DataPlate() {
+export async function DataPlate() {
+  const settings = await getSettings();
   const rows: [string, string][] = [
     ["Trades in-house", String(services.length).padStart(2, "0")],
     ["Years in trade", `${business.yearsExperience}+`],
     ["Counties served", String(counties.length).padStart(2, "0")],
-    ["Emergency", business.emergency.available ? "24 / 7" : "By appt."],
+    ["Emergency", settings.emergency.available ? "24 / 7" : "By appt."],
     ["Base", `${business.address.city}, ${business.address.state}`],
   ];
 

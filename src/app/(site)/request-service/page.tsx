@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { business, emergencyPhone } from "@/config/business";
+import { business } from "@/config/business";
+import { getSettings, type SiteSettings } from "@/lib/settings";
 import { IntakeForm } from "@/components/IntakeForm";
 import {
   Container,
@@ -19,25 +20,30 @@ export const metadata: Metadata = {
   alternates: { canonical: "/request-service" },
 };
 
-const assurances = [
-  {
-    icon: CameraIcon,
-    title: "Send the data plate",
-    body: "A photo of the make, model and serial lets us source parts before the visit. Usually turns two trips into one.",
-  },
-  {
-    icon: ClockIcon,
-    title: "About two minutes",
-    body: "Four short steps. Only name, phone and address are required.",
-  },
-  {
-    icon: PhoneIcon,
-    title: "Emergencies go by phone",
-    body: `Down right now? Call ${emergencyPhone.display} and get triaged immediately.`,
-  },
-];
+/** Takes settings because the emergency number is owner-editable. */
+function assurancesFor(settings: SiteSettings) {
+  return [
+    {
+      icon: CameraIcon,
+      title: "Send the data plate",
+      body: "A photo of the make, model and serial lets us source parts before the visit. Usually turns two trips into one.",
+    },
+    {
+      icon: ClockIcon,
+      title: "About two minutes",
+      body: "Four short steps. Only name, phone and address are required.",
+    },
+    {
+      icon: PhoneIcon,
+      title: "Emergencies go by phone",
+      body: `Down right now? Call ${settings.emergency.display} and get triaged immediately.`,
+    },
+  ];
+}
 
-export default function RequestServicePage() {
+export default async function RequestServicePage() {
+  const settings = await getSettings();
+  const assurances = assurancesFor(settings);
   return (
     <div className="grain relative bg-panel pb-20 pt-28 md:pt-36">
       <Container className="relative">
@@ -81,16 +87,16 @@ export default function RequestServicePage() {
             <div className="mt-10 border-t border-rule pt-7">
               <Label>Rather just call?</Label>
               <a
-                href={business.phoneHref}
+                href={settings.phoneHref}
                 className="font-display mt-4 flex items-center gap-3 text-xl uppercase text-ink transition-colors hover:text-cold"
               >
                 <PhoneIcon className="h-4 w-4" />
-                {business.phoneDisplay}
+                {settings.phoneDisplay}
               </a>
 
-              {business.smsHref && (
+              {settings.smsHref && (
                 <a
-                  href={business.smsHref}
+                  href={settings.smsHref}
                   className="mt-3 flex items-center gap-3 text-sm text-slate transition-colors hover:text-ink"
                 >
                   <MessageIcon />
@@ -99,9 +105,9 @@ export default function RequestServicePage() {
               )}
 
               <dl className="mt-6">
-                <SpecRow k="Mon to Fri" v={business.hours.weekday} />
-                <SpecRow k="Saturday" v={business.hours.saturday} />
-                {business.emergency.available && <SpecRow k="Emergency" v="24 / 7" />}
+                <SpecRow k="Mon to Fri" v={settings.hours.weekday} />
+                <SpecRow k="Saturday" v={settings.hours.saturday} />
+                {settings.emergency.available && <SpecRow k="Emergency" v="24 / 7" />}
               </dl>
             </div>
           </aside>

@@ -6,7 +6,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/api/",
+      // /admin is also noindex'd in its layout metadata; robots.txt is a
+      // request, not enforcement, so both are set.
+      disallow: ["/api/", "/admin"],
     },
     sitemap: `${business.siteUrl}/sitemap.xml`,
     host: business.siteUrl,

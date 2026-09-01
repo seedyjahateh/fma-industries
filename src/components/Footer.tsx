@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { business, fullAddress, emergencyPhone, confirmedLicenses } from "@/config/business";
+import { business, fullAddress, confirmedLicenses } from "@/config/business";
+import { getSettings } from "@/lib/settings";
 import { services } from "@/config/services";
 import { areas } from "@/config/areas";
 import { Container, Label, PhoneIcon, MessageIcon } from "./primitives";
@@ -40,7 +41,8 @@ function LinkColumn({
   );
 }
 
-export function Footer() {
+export async function Footer() {
+  const settings = await getSettings();
   const year = new Date().getFullYear();
 
   return (
@@ -62,16 +64,16 @@ export function Footer() {
 
             <div className="mt-7 space-y-2.5">
               <a
-                href={business.phoneHref}
+                href={settings.phoneHref}
                 className="font-display-tight flex items-center gap-2.5 text-lg uppercase text-panel transition-colors hover:text-tape"
               >
                 <PhoneIcon className="h-4 w-4" />
-                {business.phoneDisplay}
+                {settings.phoneDisplay}
               </a>
 
-              {business.smsHref && (
+              {settings.smsHref && (
                 <a
-                  href={business.smsHref}
+                  href={settings.smsHref}
                   className="flex items-center gap-2.5 text-sm text-slate transition-colors hover:text-panel"
                 >
                   <MessageIcon />
@@ -88,16 +90,16 @@ export function Footer() {
               <div>
                 <dt className="label text-slate">Hours</dt>
                 <dd className="tabular mt-1 text-sm leading-snug text-panel">
-                  Mon to Fri {business.hours.weekday}
+                  Mon to Fri {settings.hours.weekday}
                   <br />
-                  Sat {business.hours.saturday}
+                  Sat {settings.hours.saturday}
                 </dd>
               </div>
-              {business.emergency.available && (
+              {settings.emergency.available && (
                 <div>
                   <dt className="label text-slate">Emergency</dt>
                   <dd className="mt-1 text-sm text-panel">
-                    24/7 · {emergencyPhone.display}
+                    24/7 · {settings.emergency.display}
                   </dd>
                 </div>
               )}

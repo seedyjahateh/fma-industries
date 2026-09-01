@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { business, brands, emergencyPhone } from "@/config/business";
+import { business, brands } from "@/config/business";
+import { getSettings } from "@/lib/settings";
 import { services } from "@/config/services";
 import { areas, counties } from "@/config/areas";
 import { Reveal } from "./Reveal";
@@ -23,7 +24,7 @@ import {
    Inner-page hero
 ========================================================================= */
 
-export function PageHero({
+export async function PageHero({
   label,
   title,
   lead,
@@ -36,6 +37,7 @@ export function PageHero({
   breadcrumb?: { label: string; href: string }[];
   aside?: ReactNode;
 }) {
+  const settings = await getSettings();
   return (
     <section className="grain relative isolate overflow-hidden border-b border-rule bg-panel pb-14 pt-32 md:pb-20 md:pt-40">
       <HeroBackdrop />
@@ -69,9 +71,9 @@ export function PageHero({
 
             <Rise delay={100}>
               <div className="mt-9 flex flex-wrap gap-2.5">
-                <Button href={business.phoneHref} variant="tape">
+                <Button href={settings.phoneHref} variant="tape">
                   <PhoneIcon />
-                  {business.phoneDisplay}
+                  {settings.phoneDisplay}
                 </Button>
                 <Button href="/request-service" variant="outline">
                   Request service
@@ -92,11 +94,12 @@ export function PageHero({
    Capability rail
 ========================================================================= */
 
-export function CapabilityRail() {
+export async function CapabilityRail() {
+  const settings = await getSettings();
   const items = [
     { value: "20", unit: "+", caption: "Years in trade" },
     { value: "06", caption: "Trades in-house" },
-    ...(business.emergency.available ? [{ value: "24/7", caption: "Emergency line" }] : []),
+    ...(settings.emergency.available ? [{ value: "24/7", caption: "Emergency line" }] : []),
     { value: "04", caption: "Counties served" },
   ];
 
@@ -218,8 +221,9 @@ export function ProcessSteps() {
    Emergency callout
 ========================================================================= */
 
-export function EmergencyCallout() {
-  if (!business.emergency.available) return null;
+export async function EmergencyCallout() {
+  const settings = await getSettings();
+  if (!settings.emergency.available) return null;
 
   return (
     <div className="border border-ink bg-panel-2">
@@ -238,9 +242,9 @@ export function EmergencyCallout() {
           </p>
         </div>
 
-        <Button href={emergencyPhone.href} variant="tape">
+        <Button href={settings.emergency.href} variant="tape">
           <PhoneIcon />
-          {emergencyPhone.display}
+          {settings.emergency.display}
         </Button>
       </div>
     </div>
@@ -251,7 +255,7 @@ export function EmergencyCallout() {
    Brands — marquee, doubled for a seamless loop
 ========================================================================= */
 
-export function BrandStrip() {
+export async function BrandStrip() {
   const run = [...brands, ...brands];
 
   return (
@@ -340,13 +344,14 @@ export function AreaSection() {
    Closing CTA
 ========================================================================= */
 
-export function CTABand({
+export async function CTABand({
   title = "Tell us what's broken.",
   lead = "Send the make, model, and a photo of the data plate. We arrive with the right part.",
 }: {
   title?: ReactNode;
   lead?: ReactNode;
 }) {
+  const settings = await getSettings();
   return (
     <section className="on-dark grain grain-dark relative isolate overflow-hidden border-t border-rule bg-ink py-16 md:py-24">
       <HeroBackdrop tone="dark" />
@@ -360,9 +365,9 @@ export function CTABand({
           </div>
 
           <div className="flex flex-wrap gap-2.5 lg:justify-end">
-            <Button href={business.phoneHref} variant="tape">
+            <Button href={settings.phoneHref} variant="tape">
               <PhoneIcon />
-              {business.phoneDisplay}
+              {settings.phoneDisplay}
             </Button>
             <Button href="/request-service" variant="outlineDark">
               Request service

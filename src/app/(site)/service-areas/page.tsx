@@ -6,6 +6,7 @@ import { areas, additionalTowns, counties } from "@/config/areas";
 import { Reveal } from "@/components/Reveal";
 import { Container, Section, SectionHeading, ArrowIcon } from "@/components/primitives";
 import { PageHero, CapabilityRail, CTABand } from "@/components/sections";
+import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Service Areas",
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/service-areas" },
 };
 
-export default function ServiceAreasPage() {
+export default async function ServiceAreasPage() {
+  const settings = await getSettings();
   return (
     <>
       <PageHero
@@ -84,7 +86,7 @@ export default function ServiceAreasPage() {
 
           <p className="mt-8 max-w-lg text-sm leading-snug text-slate">
             Outside the list? Commercial refrigeration emergencies are worth a call even if you are
-            further out. {business.phoneDisplay}.
+            further out. {settings.phoneDisplay}.
           </p>
         </Container>
       </Section>

@@ -19,6 +19,7 @@ import {
   BoltIcon,
 } from "@/components/primitives";
 import { PageHero, CapabilityRail } from "@/components/sections";
+import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -26,7 +27,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSettings();
   const mapQuery = encodeURIComponent(
     `${business.address.city}, ${business.address.state} ${
       business.address.hideStreetAddress ? "" : business.address.zip
@@ -56,21 +58,21 @@ export default function ContactPage() {
 
               <div className="mt-10 border-t border-rule">
                 <a
-                  href={business.phoneHref}
+                  href={settings.phoneHref}
                   className="group flex items-center gap-5 border-b border-rule py-6"
                 >
                   <PhoneIcon className="h-5 w-5 shrink-0 text-slate" />
                   <span>
                     <span className="label block text-slate">Phone</span>
                     <span className="font-display mt-1.5 block text-xl uppercase text-ink transition-colors group-hover:text-cold sm:text-2xl">
-                      {business.phoneDisplay}
+                      {settings.phoneDisplay}
                     </span>
                   </span>
                 </a>
 
-                {business.smsHref && (
+                {settings.smsHref && (
                   <a
-                    href={business.smsHref}
+                    href={settings.smsHref}
                     className="group flex items-center gap-5 border-b border-rule py-6"
                   >
                     <MessageIcon className="h-5 w-5 shrink-0 text-slate" />
@@ -85,16 +87,16 @@ export default function ContactPage() {
 
                 {/* Hidden until a real address exists. Better no email row than
                     one that bounces. */}
-                {business.email && (
+                {settings.email && (
                   <a
-                    href={`mailto:${business.email}`}
+                    href={`mailto:${settings.email}`}
                     className="group flex items-center gap-5 border-b border-rule py-6"
                   >
                     <MailIcon className="h-5 w-5 shrink-0 text-slate" />
                     <span>
                       <span className="label block text-slate">Email</span>
                       <span className="mt-1.5 block text-base font-medium text-ink transition-colors group-hover:text-cold">
-                        {business.email}
+                        {settings.email}
                       </span>
                     </span>
                   </a>
@@ -123,9 +125,9 @@ export default function ContactPage() {
               <div className="mt-10">
                 <Label>Hours</Label>
                 <dl className="mt-4">
-                  <SpecRow k="Mon to Fri" v={business.hours.weekday} />
-                  <SpecRow k="Saturday" v={business.hours.saturday} />
-                  <SpecRow k="Sunday" v={business.hours.sunday} />
+                  <SpecRow k="Mon to Fri" v={settings.hours.weekday} />
+                  <SpecRow k="Saturday" v={settings.hours.saturday} />
+                  <SpecRow k="Sunday" v={settings.hours.sunday} />
                 </dl>
               </div>
             </div>
@@ -151,14 +153,14 @@ export default function ContactPage() {
                 </div>
               </Reveal>
 
-              {business.emergency.available && (
+              {settings.emergency.available && (
                 <Reveal delay={80}>
                   <div className="border border-ink bg-panel">
                     <div className="tape-stripes h-2" aria-hidden />
                     <div className="p-7 lg:p-9">
                       <Label className="flex items-center gap-2">
                         <BoltIcon className="h-3 w-3" />
-                        {business.emergency.label}
+                        {settings.emergency.label}
                       </Label>
                       <h2 className="font-display-tight mt-5 text-h3 uppercase text-ink">
                         Something down right now?
@@ -167,9 +169,9 @@ export default function ContactPage() {
                         Call. Emergencies are triaged by phone. Nobody watches an inbox at 2am.
                       </p>
                       <div className="mt-7">
-                        <Button href={emergencyPhone.href} variant="tape">
+                        <Button href={settings.emergency.href} variant="tape">
                           <PhoneIcon />
-                          {emergencyPhone.display}
+                          {settings.emergency.display}
                         </Button>
                       </div>
                     </div>

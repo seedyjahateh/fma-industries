@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 
-import { business, emergencyPhone } from "@/config/business";
+import { useSettings } from "./SettingsProvider";
 import { services } from "@/config/services";
 import { areas, additionalTowns } from "@/config/areas";
 import { resizeImage, MAX_PHOTOS, MAX_PHOTO_BYTES, MAX_TOTAL_BYTES } from "@/lib/resizeImage";
@@ -112,6 +112,8 @@ export function IntakeForm() {
     () => services.find((s) => s.slug === serviceSlug),
     [serviceSlug]
   );
+  const settings = useSettings();
+  const emergencyPhone = settings.emergency;
   const isEmergency = urgency === "emergency";
 
   async function onPhotosPicked(fileList: FileList | null) {
@@ -210,7 +212,7 @@ export function IntakeForm() {
             ) : (
               <>
                 We&apos;ll confirm a time shortly. If it gets worse before you hear back, call{" "}
-                {business.phoneDisplay}.
+                {settings.phoneDisplay}.
               </>
             )}
           </p>
@@ -578,8 +580,8 @@ export function IntakeForm() {
               <p className="text-sm text-ink">{error}</p>
               <p className="mt-1.5 text-sm text-slate">
                 You can always reach us at{" "}
-                <a href={business.phoneHref} className="font-semibold text-ink underline">
-                  {business.phoneDisplay}
+                <a href={settings.phoneHref} className="font-semibold text-ink underline">
+                  {settings.phoneDisplay}
                 </a>
                 .
               </p>
@@ -633,11 +635,11 @@ export function IntakeForm() {
         )}
 
         <a
-          href={business.phoneHref}
+          href={settings.phoneHref}
           className="ml-auto inline-flex items-center gap-2 text-sm text-slate transition-colors hover:text-ink"
         >
           <PhoneIcon />
-          Or call {business.phoneDisplay}
+          Or call {settings.phoneDisplay}
         </a>
       </div>
     </form>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { business } from "@/config/business";
+import { useSettings } from "./SettingsProvider";
 import { PhoneIcon, MessageIcon, CameraIcon } from "./primitives";
 
 /**
@@ -14,15 +14,16 @@ import { PhoneIcon, MessageIcon, CameraIcon } from "./primitives";
  */
 export function StickyCallBar() {
   const pathname = usePathname();
+  const settings = useSettings();
   if (pathname === "/request-service") return null;
 
-  const canText = Boolean(business.smsHref);
+  const canText = Boolean(settings.smsHref);
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ink bg-panel md:hidden">
       <div className={`grid ${canText ? "grid-cols-[1.5fr_1fr_1fr]" : "grid-cols-2"}`}>
         <a
-          href={business.phoneHref}
+          href={settings.phoneHref}
           className="flex items-center justify-center gap-2 bg-tape px-3 py-4 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-ink"
         >
           <PhoneIcon />
@@ -31,7 +32,7 @@ export function StickyCallBar() {
 
         {canText && (
           <a
-            href={business.smsHref!}
+            href={settings.smsHref!}
             className="flex items-center justify-center gap-2 border-l border-rule px-3 py-4 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-ink"
           >
             <MessageIcon />

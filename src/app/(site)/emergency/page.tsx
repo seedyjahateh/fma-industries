@@ -17,6 +17,7 @@ import {
   BoltIcon,
 } from "@/components/primitives";
 import { CapabilityRail } from "@/components/sections";
+import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "24/7 Emergency Service",
@@ -99,7 +100,8 @@ const faqs = [
   },
 ];
 
-export default function EmergencyPage() {
+export default async function EmergencyPage() {
+  const settings = await getSettings();
   return (
     <>
       <JsonLd data={faqSchema(faqs)} />
@@ -112,7 +114,7 @@ export default function EmergencyPage() {
           <Rise>
             <Label className="flex items-center gap-2">
               <BoltIcon className="h-3 w-3" />
-              {business.emergency.label}
+              {settings.emergency.label}
             </Label>
 
             <h1 className="font-display mt-6 max-w-3xl text-display-sm uppercase text-ink">
@@ -127,19 +129,19 @@ export default function EmergencyPage() {
 
           <Rise delay={100}>
             <a
-              href={emergencyPhone.href}
+              href={settings.emergency.href}
               className="mt-9 inline-flex items-center gap-4 bg-tape px-8 py-5 transition-colors hover:bg-ink hover:text-tape"
             >
               <PhoneIcon className="h-5 w-5" />
               <span className="font-display text-xl uppercase leading-none sm:text-2xl">
-                {emergencyPhone.display}
+                {settings.emergency.display}
               </span>
             </a>
 
-            {business.smsHref && (
+            {settings.smsHref && (
               <p className="mt-5">
                 <a
-                  href={business.smsHref}
+                  href={settings.smsHref}
                   className="inline-flex items-center gap-2.5 text-sm text-slate transition-colors hover:text-ink"
                 >
                   <MessageIcon />
@@ -237,12 +239,12 @@ export default function EmergencyPage() {
             Don&apos;t wait on a form.
           </h2>
           <a
-            href={emergencyPhone.href}
+            href={settings.emergency.href}
             className="mt-8 inline-flex items-center gap-4 bg-tape px-8 py-5 transition-colors hover:bg-ink hover:text-tape"
           >
             <PhoneIcon className="h-5 w-5" />
             <span className="font-display text-xl uppercase leading-none sm:text-2xl">
-              {emergencyPhone.display}
+              {settings.emergency.display}
             </span>
           </a>
         </Container>
