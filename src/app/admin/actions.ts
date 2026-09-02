@@ -1,10 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { getSupabase } from "@/lib/supabase";
 import { invalidateSettings } from "@/lib/settings";
+import { STATUSES, deleteJobRequest } from "@/lib/jobRequests";
 import {
   createSession,
   destroySession,
@@ -197,4 +199,88 @@ export async function saveSettings(
   invalidateSettings();
 
   return { ok: "Saved. The website is updated." };
+}
+
+/* -------------------------------------------------------------------------
+   Job requests
+------------------------------------------------------------------------- */
+
+const TriageSchema = z.object({
+  id: z.uuid(),
+  status: z.enum(STATUSES),
+  // datetime-local gives "YYYY-MM-DDTHH:mm"; empty means not scheduled.
+  scheduled_for: z.string().trim(),
+  internal_notes: z.string().trim().max(4000),
+});
+
+export async function saveTriage(
+  _prev: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  await requireOperator();
+
+  const parsed = TriageSchema.safeParse({
+    id: formData.get("id"),
+    status: formData.get("status"),
+    scheduled_for: formData.get("scheduled_for") ?? "",
+    internal_notes: formData.get("internal_notes") ?? "",
+  });
+
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Some of those values look wrong." };
+  }
+
+  const supabase = getSupabase();
+  if (!supabase) return { error: "The database is not connected yet." };
+
+  const { id, status, scheduled_for, internal_notes } = parsed.data;
+
+  const { error } = await supabase
+    .from("job_requests")
+    .update({
+      status,
+      scheduled_for: scheduled_for ? new Date(scheduled_for).toISOString() : null,
+      internal_notes: internal_notes || null,
+    })
+    .eq("id", id);
+
+  if (error) {
+    console.error("[triage] save failed:", error);
+    return { error: "Could not save that. Try again in a moment." };
+  }
+
+  // The inbox and this page are dynamic, but the router cache would otherwise
+  // hand back the previous render on navigation.
+  revalidatePath("/admin");
+  revalidatePath(`/admin/requests/${id}`);
+
+  return { ok: "Saved." };
+}
+
+/**
+ * Permanently delete a request, its photo rows and its stored photographs.
+ *
+ * This is what makes the deletion promise in the privacy policy real, so it
+ * genuinely removes the objects rather than just hiding the row.
+ */
+export async function deleteRequest(
+  _prev: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  await requireOperator();
+
+  const id = z.uuid().safeParse(formData.get("id"));
+  if (!id.success) return { error: "That request could not be found." };
+
+  // Typing the word is the confirmation. A native confirm() dialog would block
+  // the browser-automation tooling and is easy to dismiss by accident on a phone.
+  if ((formData.get("confirm") ?? "").toString().trim().toUpperCase() !== "DELETE") {
+    return { error: 'Type DELETE to confirm. Nothing was deleted.' };
+  }
+
+  const result = await deleteJobRequest(id.data);
+  if (!result.ok) return { error: result.error ?? "Could not delete that request." };
+
+  revalidatePath("/admin");
+  redirect("/admin");
 }

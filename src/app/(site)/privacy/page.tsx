@@ -91,12 +91,16 @@ export default async function PrivacyPage() {
               <p>
                 That email is delivered by <strong className="text-ink">Resend</strong>, an email
                 service based in the United States. They process the message in order to deliver it.
-                They are the only third party that handles your details.
               </p>
               <p>
-                <strong className="text-ink">There is no database.</strong> Your request is not
-                stored in one, and your photographs are not kept in any cloud storage account. Once
-                the email is delivered, the copy that matters is the one in our mailbox.
+                Your request is also saved to our own records, and any photographs you send are
+                stored with it. That database and file storage are run by{" "}
+                <strong className="text-ink">Supabase</strong>, also in the United States. Resend
+                and Supabase are the only two companies that handle your details.
+              </p>
+              <p>
+                The stored photographs are private. They are not published anywhere, and they are
+                not readable by anyone who has not signed in to our system.
               </p>
             </Clause>
 
@@ -123,8 +127,14 @@ export default async function PrivacyPage() {
             <Clause heading="How long we keep it">
               <p>
                 Service requests live in our email like any other customer correspondence, and are
-                kept as long as we need them for the job, the warranty on the work, and our records.
-                Photographs are part of that email.
+                also kept in our records for as long as we need them: the job itself, the warranty
+                on the work, and knowing what we fitted last time we came out.
+              </p>
+              <p>
+                We keep them until we delete them rather than on a fixed timer, because the photo of
+                a unit&apos;s data plate is what lets us bring the right part next time instead of
+                driving out to read the label again. If you would rather we did not, say so and we
+                will remove it.
               </p>
             </Clause>
 
@@ -140,8 +150,8 @@ export default async function PrivacyPage() {
                     </a>
                   </>
                 )}
-                , tell us roughly when you contacted us, and we will remove the request and any
-                photographs from our mail.
+                , tell us roughly when you contacted us, and we will delete the request from our
+                records, delete the photographs from storage, and remove the email.
               </p>
               <p>
                 You can also ask what we hold about you, and we will tell you. There is no charge

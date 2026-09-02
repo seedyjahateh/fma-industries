@@ -56,5 +56,21 @@ export async function resizeImage(file: File, maxEdge = 1600, quality = 0.82): P
 }
 
 export const MAX_PHOTOS = 4;
+
+/** Per-file gate applied BEFORE downscaling, which brings most photos well under. */
 export const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
-export const MAX_TOTAL_BYTES = 18 * 1024 * 1024;
+
+/**
+ * Total across all photos, AFTER downscaling.
+ *
+ * Held at 4MB because serverless platforms cap request bodies at roughly 4.5MB
+ * (Vercel does), and the platform rejects an oversized body with a 413 before
+ * any of our code runs. The previous 18MB was a limit we could never actually
+ * honour, and the first casualty would have been an emergency with four photos.
+ *
+ * In practice this is not tight: at 1600px and quality 0.82 a phone photo lands
+ * around 250-500KB, so four come to roughly 1-2MB. If real submissions ever
+ * approach the cap, the fix is uploading straight from the browser to Storage
+ * rather than raising this number.
+ */
+export const MAX_TOTAL_BYTES = 4 * 1024 * 1024;

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { business } from "@/config/business";
 import { MAX_PHOTOS, MAX_TOTAL_BYTES } from "@/lib/resizeImage";
+import { attachPhoto, createJobRequest, recordEmailResult } from "@/lib/jobRequests";
+import { isDatabaseConfigured } from "@/lib/supabase";
 
 /**
  * Service request intake.
@@ -146,6 +148,7 @@ export async function POST(request: Request) {
 
   const photos = data.getAll("photos").filter((p): p is File => p instanceof File && p.size > 0);
   const attachments: { filename: string; content: string }[] = [];
+  const uploads: { buffer: Buffer; extension: string; contentType: string }[] = [];
   let totalBytes = 0;
 
   for (const [i, photo] of photos.slice(0, MAX_PHOTOS).entries()) {
@@ -154,10 +157,43 @@ export async function POST(request: Request) {
 
     const buffer = Buffer.from(await photo.arrayBuffer());
     const extension = (photo.name.match(/\.[a-z0-9]+$/i)?.[0] ?? ".jpg").toLowerCase();
+    // Kept as an email attachment as well as stored, so the notification is
+    // still useful on its own without opening the panel.
     attachments.push({
       filename: `dataplate-${i + 1}${extension}`,
       content: buffer.toString("base64"),
     });
+    uploads.push({ buffer, extension, contentType: photo.type || "image/jpeg" });
+  }
+
+  /* ----------------------------- persist ----------------------------- */
+
+  // Store BEFORE emailing. Whichever of the two succeeds, the lead survives.
+  // createJobRequest never throws: a database problem must not stop the email.
+  const record = await createJobRequest({
+    property_type: fields.propertyType,
+    service: fields.service,
+    service_slug: str(data, "serviceSlug"),
+    urgency,
+    urgency_label: fields.urgencyLabel,
+    name,
+    company: fields.company,
+    phone,
+    email: fields.email,
+    address,
+    city,
+    contact_window: fields.contactWindow,
+    symptoms: fields.symptoms,
+    description: fields.description,
+    equipment_make: fields.equipmentMake,
+    equipment_model: fields.equipmentModel,
+    equipment_serial: fields.equipmentSerial,
+    access_notes: fields.accessNotes,
+  });
+
+  if (record) {
+    // Best-effort: losing a photograph is bad, losing the request is worse.
+    for (const upload of uploads) await attachPhoto(record.id, upload);
   }
 
   /* ----------------------------- email body ----------------------------- */
@@ -219,45 +255,85 @@ export async function POST(request: Request) {
   // nowhere to deliver, and dropping a lead silently is the worst outcome here.
   const to = business.email;
 
-  if (!apiKey || !from || !to) {
-    // In development the form stays testable without credentials.
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        `\n[request-service] Not sending. Missing: ${[
-          !apiKey && "RESEND_API_KEY",
-          !from && "RESEND_FROM",
-          !to && "business.email (owner has no address yet)",
-        ]
-          .filter(Boolean)
-          .join(", ")}\n`,
-        { name, phone, address, city, ...fields, photos: attachments.length }
-      );
-      return NextResponse.json({ ok: true, delivered: false });
-    }
+  /**
+   * The request is safe if EITHER the record stored or the email sent. Only a
+   * double failure is reported to the customer, and then we tell them to phone.
+   *
+   * Before the database existed, a missing mailbox meant refusing the
+   * submission. Now the stored row is the safety net, which matters because the
+   * owner still has no email address.
+   */
+  let emailed = false;
+  let emailError: string | null = null;
 
-    console.error(
-      "[request-service] Email is not configured — a lead was not delivered.",
-      { hasApiKey: Boolean(apiKey), hasFrom: Boolean(from), hasDestination: Boolean(to) }
-    );
-    return NextResponse.json(
-      { ok: false, error: `We couldn't send that. Please call us at ${business.phoneDisplay}.` },
-      { status: 500 }
+  if (!apiKey || !from || !to) {
+    emailError = `Email not configured (${[
+      !apiKey && "RESEND_API_KEY",
+      !from && "RESEND_FROM",
+      !to && "no destination address",
+    ]
+      .filter(Boolean)
+      .join(", ")})`;
+
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(`\n[request-service] ${emailError}. Stored: ${Boolean(record)}\n`, {
+        name,
+        phone,
+        address,
+        city,
+        ...fields,
+        photos: attachments.length,
+      });
+    } else {
+      console.error(`[request-service] ${emailError}`);
+    }
+  } else {
+    try {
+      await sendEmail({
+        from,
+        to: [to],
+        subject: `${isEmergency ? "EMERGENCY · " : ""}${fields.service || "Service request"} — ${
+          fields.company || name
+        } (${city})`,
+        html,
+        reply_to: fields.email || undefined,
+        ...(attachments.length ? { attachments } : {}),
+      });
+      emailed = true;
+    } catch (error) {
+      emailError = error instanceof Error ? error.message : String(error);
+      console.error("[request-service] email failed:", error);
+    }
+  }
+
+  if (record) {
+    await recordEmailResult(
+      record.id,
+      emailed ? { ok: true } : { ok: false, error: emailError ?? "unknown" }
     );
   }
 
-  try {
-    await sendEmail({
-      from,
-      to: [to],
-      subject: `${isEmergency ? "EMERGENCY · " : ""}${fields.service || "Service request"} — ${
-        fields.company || name
-      } (${city})`,
-      html,
-      reply_to: fields.email || undefined,
-      ...(attachments.length ? { attachments } : {}),
+  // Both paths failed: the only case the customer must hear about.
+  if (!record && !emailed) {
+    // Development, with neither service provisioned yet, is not a failure: it
+    // is someone working on the form before the accounts exist. Log the whole
+    // submission and let the flow complete so it stays testable. This is
+    // narrow on purpose: nothing CONFIGURED has failed, and it never applies
+    // in production.
+    const nothingConfigured = !isDatabaseConfigured() && (!apiKey || !from || !to);
+    if (process.env.NODE_ENV !== "production" && nothingConfigured) {
+      console.warn(
+        "\n[request-service] No database and no email configured. Submission logged only:\n",
+        { name, phone, address, city, ...fields, photos: attachments.length }
+      );
+      return NextResponse.json({ ok: true, delivered: false, recorded: false });
+    }
+
+    console.error("[request-service] LEAD LOST: neither stored nor emailed.", {
+      databaseConfigured: isDatabaseConfigured(),
+      emailConfigured: Boolean(apiKey && from && to),
+      emailError,
     });
-  } catch (error) {
-    console.error("[request-service] Failed to deliver lead:", error);
     return NextResponse.json(
       { ok: false, error: `We couldn't send that. Please call us at ${business.phoneDisplay}.` },
       { status: 502 }
@@ -302,5 +378,7 @@ export async function POST(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, delivered: true });
+  // `delivered` reports the email specifically. The customer sees success as
+  // long as the request was captured one way or the other.
+  return NextResponse.json({ ok: true, delivered: emailed, recorded: Boolean(record) });
 }
