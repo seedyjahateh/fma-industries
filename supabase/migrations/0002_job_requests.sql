@@ -63,7 +63,7 @@ create table if not exists public.job_request_photos (
 
 comment on table public.job_request_photos is
   'Cascade drops these rows with the request, but does NOT delete the objects in '
-  'Storage. Delete the objects first: see deleteRequest() in src/app/admin/actions.ts.';
+  'Storage. Delete the objects first: see deleteJobRequest() in src/lib/jobRequests.ts.';
 
 -- Newest first is the only ordering the inbox uses.
 create index if not exists job_requests_created_idx on public.job_requests (created_at desc);

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:push": "node scripts/db-push.mjs",
+    "verify:db": "node --conditions=react-server --import tsx scripts/verify-db.ts",
+    "verify:schema": "node scripts/validate-schema.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",
@@ -26,7 +29,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
+    "supabase": "^2.116.0",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }
