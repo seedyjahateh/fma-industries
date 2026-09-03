@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FMA Industries | HVAC Services</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1>FMA Industries</h1>
+        <p class="tagline">Reliable HVAC installation, maintenance, and emergency support.</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="section container" aria-labelledby="services-title">
+        <h2 id="services-title">Our Services</h2>
+        <ul class="service-list">
+          <li>Residential & commercial HVAC installation</li>
+          <li>Preventive maintenance and seasonal tune-ups</li>
+          <li>24/7 emergency repair support</li>
+          <li>Indoor air quality diagnostics and upgrades</li>
+        </ul>
+      </section>
+
+      <section class="section container" aria-labelledby="request-title">
+        <h2 id="request-title">Submit a Work Request</h2>
+        <form id="request-form" novalidate>
+          <div class="grid">
+            <label>
+              Full name
+              <input name="name" type="text" required />
+            </label>
+            <label>
+              Phone
+              <input name="phone" type="tel" required />
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" required />
+            </label>
+            <label>
+              Service type
+              <select name="serviceType" required>
+                <option value="">Select service</option>
+                <option>Installation</option>
+                <option>Maintenance</option>
+                <option>Repair</option>
+                <option>Inspection</option>
+              </select>
+            </label>
+            <label>
+              Property address
+              <input name="address" type="text" required />
+            </label>
+            <label>
+              Preferred date
+              <input name="preferredDate" type="date" required />
+            </label>
+            <label>
+              Urgency
+              <select name="urgency" required>
+                <option value="">Select urgency</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+                <option>Emergency</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Request details
+            <textarea name="details" rows="4" required></textarea>
+          </label>
+
+          <p id="form-message" role="status" aria-live="polite"></p>
+          <button type="submit">Create Request</button>
+        </form>
+      </section>
+
+      <section class="section container" aria-labelledby="manage-title">
+        <h2 id="manage-title">Manage Requests</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Urgency</th>
+                <th>Preferred Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="request-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>FMA Industries • HVAC you can trust</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
