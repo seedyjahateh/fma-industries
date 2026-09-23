@@ -11,6 +11,8 @@ import type { Metadata } from "next";
  */
 
 import { business, fullAddress, confirmedLicenses } from "@/config/business";
+import { portrait } from "@/config/photos";
+import { JobPhoto } from "@/components/Photos";
 import { Reveal } from "@/components/Reveal";
 import {
   Container,
@@ -80,6 +82,11 @@ export default function AboutPage() {
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
             <div className="lg:sticky lg:top-28 lg:self-start">
               <SectionHeading label="Who we are" title="Six trades is unusual. That's the point." />
+              <JobPhoto
+                photo={portrait}
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="mt-10 aspect-[3/4] w-full max-w-md border border-ink"
+              />
             </div>
 
             <div className="space-y-5">

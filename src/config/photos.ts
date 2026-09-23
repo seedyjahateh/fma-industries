@@ -84,6 +84,11 @@ export const workPhotos: Photo[] = [
 export const servicePhotos: Partial<Record<string, Photo>> = {};
 
 /** The owner, on the about page. People hire people. */
-export const portrait: Photo | null = null;
+export const portrait: Photo | null = {
+  src: "/photos/owner-rooftop-unit.jpg",
+  alt: "The owner of FMA Industries in a company polo, standing in front of an open commercial rooftop unit.",
+  width: 900,
+  height: 1600,
+};
 
 export const hasWorkPhotos = workPhotos.length > 0;

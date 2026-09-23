@@ -24,7 +24,6 @@ export const PLACEHOLDERS_REMAINING: readonly string[] = [
   "Is 24/7 emergency real? The site promises it prominently",
   "Year founded (the hero no longer claims one)",
   "Insurance carrier name",
-  "Job photos — owner says they are coming",
   "Exact map coordinates for 900 N Chapel St (currently Landis town centre)",
   "Domain name, then Resend domain verification",
   "Google Business Profile URL once claimed",
