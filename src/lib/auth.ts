@@ -137,7 +137,16 @@ export async function requireOperator(): Promise<Session> {
   return session;
 }
 
-/** True once a password has been configured, used to explain setup in the UI. */
+/**
+ * True once all three login values are configured, used to explain setup in
+ * the UI. Must cover everything login() refuses without: when this checked only
+ * the hash and secret, a missing ADMIN_USERNAME showed a working-looking form
+ * that answered every correct password with "No account is set up yet".
+ */
 export function isAuthConfigured(): boolean {
-  return Boolean(process.env.ADMIN_PASSWORD_HASH && process.env.ADMIN_SESSION_SECRET);
+  return Boolean(
+    process.env.ADMIN_USERNAME &&
+      process.env.ADMIN_PASSWORD_HASH &&
+      process.env.ADMIN_SESSION_SECRET
+  );
 }
