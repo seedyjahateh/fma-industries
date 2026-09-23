@@ -1,6 +1,6 @@
 import "server-only";
 
-import { unstable_cache, revalidateTag } from "next/cache";
+import { unstable_cache, updateTag } from "next/cache";
 
 import { business } from "@/config/business";
 import { brands as defaultBrands } from "@/config/business";
@@ -124,7 +124,12 @@ const readSettings = unstable_cache(
       .eq("id", 1)
       .single();
 
-    if (error || !data) return null;
+    // Throw rather than return null: unstable_cache stores whatever this returns,
+    // and with revalidate:false a null from one bad moment (a paused free-tier
+    // database) would pin the config defaults, email included, until the next
+    // Save. A throw is not cached; getSettings() catches it and serves defaults
+    // for this request only.
+    if (error || !data) throw new Error(error?.message ?? "settings row missing");
     return rowToSettings(data as SettingsRow);
   },
   ["site-settings"],
@@ -149,9 +154,13 @@ export async function getSettings(): Promise<SiteSettings> {
 }
 
 /**
- * Call after any write. Next 16 requires the second `cacheLife` argument;
- * "max" gives the longest stale-while-revalidate window.
+ * Call after any write, from a Server Action only.
+ *
+ * updateTag, not revalidateTag(tag, "max"): "max" is stale-while-revalidate, so
+ * the first read after a Save still got the OLD row. For the email address that
+ * meant the next job request went to the previous address (or nowhere), and the
+ * settings form reloaded showing the old values as if the Save had not worked.
  */
 export function invalidateSettings() {
-  revalidateTag(SETTINGS_TAG, "max");
+  updateTag(SETTINGS_TAG);
 }
