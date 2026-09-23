@@ -3,6 +3,7 @@ import { business } from "@/config/business";
 import { MAX_PHOTOS, MAX_TOTAL_BYTES } from "@/lib/resizeImage";
 import { attachPhoto, createJobRequest, recordEmailResult } from "@/lib/jobRequests";
 import { isDatabaseConfigured } from "@/lib/supabase";
+import { getSettings } from "@/lib/settings";
 
 /**
  * Service request intake.
@@ -251,9 +252,20 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM;
-  // business.email is the destination. Until the owner has an address there is
-  // nowhere to deliver, and dropping a lead silently is the worst outcome here.
-  const to = business.email;
+  /**
+   * The destination comes from the admin panel, NOT from src/config/business.ts.
+   *
+   * This read used to be `business.email`, which is hardcoded null. Every other
+   * consumer of the address - the contact page, the privacy policy, the
+   * structured data - already read the owner-editable setting, so the single
+   * place that decides where a lead is actually delivered was the one place
+   * still reading a constant. Setting an address in the panel changed nothing
+   * and the route reported "no destination address" no matter what he typed.
+   *
+   * getSettings() falls back to the config default and never throws, so a
+   * database outage still leaves the email path working.
+   */
+  const to = (await getSettings()).email;
 
   /**
    * The request is safe if EITHER the record stored or the email sent. Only a
