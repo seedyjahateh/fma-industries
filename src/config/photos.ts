@@ -32,7 +32,50 @@ export interface Photo {
 }
 
 /** Recent work strip on the homepage. Three or more reads best. */
-export const workPhotos: Photo[] = [];
+export const workPhotos: Photo[] = [
+  {
+    src: "/photos/rooftop-unit-service.jpg",
+    alt: "Commercial rooftop unit with its service panel open, showing two compressors and control boards, with a manifold gauge set connected to the refrigerant lines.",
+    width: 1350,
+    height: 2400,
+    caption: "Rooftop unit service",
+  },
+  {
+    src: "/photos/refrigeration-compressor.jpg",
+    alt: "Cubigel refrigeration compressor mounted in the base of a commercial refrigeration unit.",
+    width: 1350,
+    height: 2400,
+    caption: "Refrigeration compressor",
+  },
+  {
+    src: "/photos/zoning-control-panel.jpg",
+    alt: "Wired HVAC zoning control panel, model HZ322, with status lights on for zones 1 and 2.",
+    width: 1800,
+    height: 2400,
+    caption: "Zoning control panel",
+  },
+  {
+    src: "/photos/mini-split-install-outdoor.jpg",
+    alt: "Ductless mini-split outdoor unit on a brick wall, with a vacuum pump hooked to the line set and tools laid out on the walkway.",
+    width: 1800,
+    height: 2400,
+    caption: "Mini-split installation",
+  },
+  {
+    src: "/photos/mini-split-condenser.jpg",
+    alt: "Daikin ductless mini-split condenser mounted on a brick wall above the shrubs, with its line set running through a white cover.",
+    width: 1800,
+    height: 2400,
+    caption: "Wall-mounted condenser",
+  },
+  {
+    src: "/photos/mini-split-garage-head.jpg",
+    alt: "Ductless mini-split indoor unit mounted high on a garage wall, with a stepladder set up beneath it.",
+    width: 1800,
+    height: 2400,
+    caption: "Mini-split head, garage",
+  },
+];
 
 /**
  * Per-service hero photography, keyed by the slug in config/services.ts.

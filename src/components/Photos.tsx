@@ -70,7 +70,8 @@ export function WorkStrip() {
         <div className="mt-12 grid gap-px border-y border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
           {workPhotos.map((photo, i) => (
             <Reveal key={photo.src} delay={i * 50}>
-              <JobPhoto photo={photo} className="aspect-[4/3] w-full" />
+              {/* Portrait tiles: the job photography is all shot on a phone held upright. */}
+              <JobPhoto photo={photo} className="aspect-[3/4] w-full" />
             </Reveal>
           ))}
         </div>
